@@ -1,0 +1,83 @@
+<mat-toolbar color="primary">
+  <h2 translate>driver.add</h2>
+  <span fxFlex></span>
+  <button mat-icon-button (click)="cancel()" type="button">
+    <mat-icon class="material-icons">close</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoading$ | async">
+</mat-progress-bar>
+<div style="height: 4px;" *ngIf="!(isLoading$ | async)"></div>
+
+<div mat-dialog-content>
+  <form [formGroup]="entityForm" (ngSubmit)="save()">
+    <fieldset [disabled]="isLoading$ | async">
+      <mat-form-field class="mat-block">
+        <mat-label translate>driver.name</mat-label>
+        <input matInput formControlName="name" required>
+        <mat-error *ngIf="entityForm.get('name').hasError('required')">
+          Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mat-block">
+        <mat-label translate>driver.gender</mat-label>
+        <mat-select formControlName="gender" required>
+          <mat-option [value]="gender" *ngFor="let gender of genderOptions">{{ gender }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="entityForm.get('gender').hasError('required')">
+          Gender is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mat-block">
+        <mat-label translate>driver.dateOfBirth</mat-label>
+        <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth" required>
+        <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dobPicker></mat-datepicker>
+        <mat-error *ngIf="entityForm.get('dateOfBirth').hasError('required')">
+          Date of birth is required
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="mat-block">
+        <mat-label translate>driver.serviceStartDate</mat-label>
+        <input matInput [matDatepicker]="startDatePicker" formControlName="serviceStartDate" required>
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+        <mat-error *ngIf="entityForm.get('serviceStartDate').hasError('required')">
+          Service start date is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mat-block">
+        <mat-label translate>driver.drivingLicenseNumber</mat-label>
+        <input matInput formControlName="drivingLicenseNumber" required>
+        <mat-error *ngIf="entityForm.get('drivingLicenseNumber').hasError('required')">
+          License number is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mat-block">
+        <mat-label translate>driver.drivingLicenseValidity</mat-label>
+        <input matInput [matDatepicker]="validityPicker" formControlName="drivingLicenseValidity" required>
+        <mat-datepicker-toggle matSuffix [for]="validityPicker"></mat-datepicker-toggle>
+        <mat-datepicker #validityPicker></mat-datepicker>
+        <mat-error *ngIf="entityForm.get('drivingLicenseValidity').hasError('required')">
+          License validity date is required
+        </mat-error>
+      </mat-form-field>
+    </fieldset>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()" [disabled]="isLoading$ | async">
+    {{ 'action.cancel' | translate }}
+  </button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="entityForm.invalid || (isLoading$ | async)">
+    {{ 'action.add' | translate }}
+  </button>
+</div>

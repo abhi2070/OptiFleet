@@ -1,0 +1,4 @@
+<mat-tab *ngIf="entity"
+         label="{{ 'vehicle.vehicleProfile' | translate }}" #vehicleTab="matTab">
+<tb-vehicle-profile [active]="vehicleTab.isActive" [entityId]="entity.id"></tb-vehicle-profile>
+</mat-tab>

@@ -1,0 +1,15 @@
+<mat-form-field fxFlex class="mat-block" [formGroup]="threedEntityKeySettingsFormGroup">
+  <mat-label>3D model URL source entity attribute</mat-label>
+  <input matInput type="text" placeholder="{{ 'entity.key-name' | translate }}" #keyInput
+    (focusin)="onKeyFocus()" formControlName="entityAttribute" [matAutocomplete]="keyAutocomplete">
+  <button
+    *ngIf="threedEntityKeySettingsFormGroup.get('entityAttribute').value && !threedEntityKeySettingsFormGroup.get('entityAttribute').disabled"
+    type="button" matSuffix mat-icon-button aria-label="Clear" (click)="clearKey()">
+    <mat-icon class="material-icons">close</mat-icon>
+  </button>
+  <mat-autocomplete class="tb-autocomplete" #keyAutocomplete="matAutocomplete">
+    <mat-option *ngFor="let key of filteredKeys | async" [value]="key">
+      <span [innerHTML]="key | highlight:keySearchText"></span>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

@@ -1,0 +1,95 @@
+<div class="calendar-container">
+  <div class="header-row">
+    <div class="month-year">
+      {{ viewDate | date: 'MMMM yyyy' }}
+    </div>
+
+    <div class="view-selector">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Calendar view type</mat-label>
+        <mat-select [(value)]="view">
+          <mat-option value="month">Month</mat-option>
+          <mat-option value="week">Week</mat-option>
+          <mat-option value="day">Day</mat-option>
+          <mat-option value="listYear">List Year</mat-option>
+          <mat-option value="listMonth">List Month</mat-option>
+          <mat-option value="listWeek">List Week</mat-option>
+          <mat-option value="listDay">List Day</mat-option>
+          <mat-option value="agendaWeek">Agenda Week</mat-option>
+          <mat-option value="agendaDay">Agenda Day</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="today-button">
+      <button mat-raised-button (click)="goToToday()">Today</button>
+    </div>
+
+    <div class="navigation">
+      <button mat-mini-fab class="custom-nav-button" (click)="previousClicked()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button mat-mini-fab class="custom-nav-button" (click)="nextClicked()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div> 
+  </div>
+
+  <!-- Calendar Views -->
+  <div [ngSwitch]="view">
+    <!-- Month View -->
+    <ng-container *ngSwitchCase="'month'">
+      <div class="week-header">
+        <div *ngFor="let day of weekDays" class="week-day">{{ day }}</div>
+      </div>
+      <div class="calendar-grid">
+        <div *ngFor="let day of monthDays" class="calendar-day" [class.placeholder]="!day" [class.today]="isToday(day)" (click)="day && openSchedulerDialog(day)">
+          <div *ngIf="day" class="calendar-date">{{ day | date: 'd' }}</div>
+          <div *ngIf="day && view === 'day'" class="calendar-events">
+            <div *ngIf="day" class="calendar-events">
+              <div *ngFor="let event of getEventsForDay(day)" class="event" [style.backgroundColor]="event.color.primary">
+                {{ event.title }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Week View -->
+    <ng-container *ngSwitchCase="'week'">
+      <div class="week-header">
+        <div *ngFor="let day of weekDays" class="week-day">{{ day }}</div>
+      </div>
+      <div class="calendar-grid">
+        <div *ngFor="let day of getCurrentWeekDays()" class="calendar-day"  [class.today]="isToday(day)" (click)="openSchedulerDialog(day)">
+          <div class="calendar-date">{{ day | date: 'd' }}</div>
+          <div class="calendar-events">
+            <div *ngFor="let event of getEventsForDay(day)" class="event" [style.backgroundColor]="event.color.primary">
+              {{ event.title }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Day View -->
+    <div *ngSwitchCase="'day'" class="calendar-day-view">
+      <div class="calendar-single-day" [class.today]="isToday(viewDate)">
+        <div class="calendar-date">{{ viewDate | date: 'EEEE, MMM d' }}</div>
+        <div class="calendar-events">
+          <div *ngFor="let event of getEventsForDay(viewDate)" class="event" [style.backgroundColor]="event.color.primary">
+            {{ event.title }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Events to Display -->
+    <ng-container *ngSwitchDefault>
+      <div class="no-events">
+        No events to display
+      </div>
+    </ng-container>
+  </div>
+

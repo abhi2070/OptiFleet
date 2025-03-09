@@ -1,0 +1,11 @@
+
+<div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+  <mat-button-toggle-group class="tb-notification-unread-toggle-group"
+                           style="width: 180px;"
+                           [ngModel]="entitiesTableConfig.componentsData.unreadOnly"
+                           (ngModelChange)="changeUnreadOnly($event)">
+    <mat-button-toggle fxFlex [value]=true>{{ 'notification.unread' | translate }}</mat-button-toggle>
+    <mat-button-toggle fxFlex [value]=false>{{ 'notification.all' | translate }}</mat-button-toggle>
+  </mat-button-toggle-group>
+
+</div>

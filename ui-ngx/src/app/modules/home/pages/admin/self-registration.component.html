@@ -1,0 +1,199 @@
+<!-- eslint-disable @angular-eslint/template/no-negated-async -->
+<div>
+    <mat-card appearance="outlined" class="settings-card">
+        <mat-card-header>
+            <mat-card-title>
+                <span class="mat-headline-5" translate>registration.self-registration</span>
+            </mat-card-title>
+            <span fxFlex></span>
+            <div tb-help=""></div>
+        </mat-card-header>
+        <mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
+        <div style="height: 4px;" *ngIf="!(isLoading$ | async)"></div>
+        <mat-card-content>
+            <form [formGroup]="selfRegistrationFormGroup" (ngSubmit)="save()">
+                <fieldset [disabled]="isLoading$ | async">
+                    <div>
+                        <!-- domainSettingsForm -->
+                        <fieldset class="fields-group">
+                            <legend class="group-title" translate>registration.domain-settings</legend>
+                            <section formGroupName="domainSettings">
+                                <mat-form-field fxFlex class="mat-block">
+                                    <mat-label translate>admin.domain-name</mat-label>
+                                    <input matInput required formControlName="domainName">
+                                </mat-form-field>
+                                <div mat-dialog-content tb-toast toastTarget="activationLinkDialogContent">
+                                    <div class="mat-content" fxLayout="column">
+                                        <span>{{ 'registration.self-registration-url' | translate}}</span>
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <pre class="tb-highlight" fxFlex><code>{{ domainSignupLink }}</code></pre>
+                                            <button mat-icon-button color="primary" ngxClipboard
+                                                [cbContent]="domainSignupLink"
+                                                matTooltip="{{ 'user.copy-activation-link' | translate }}"
+                                                matTooltipPosition="above">
+                                                <mat-icon svgIcon="mdi:clipboard-arrow-left"></mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="8px">
+                                    <mat-form-field class="mat-block mat-blocks">
+                                        <mat-label translate for="captcha">registration.recaptcha-version</mat-label>
+                                        <mat-select id="captcha" formControlName="version">
+                                            <mat-option *ngFor="let captchaVersion of version" [value]="captchaVersion">
+                                                {{captchaVersion}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="selectedCaptchaVersion === 'v3'" fxFlex class="mat-block"
+                                        appearance="fill">
+                                        <mat-label translate>registration.recaptcha-log-action-name</mat-label>
+                                        <input matInput formControlName="logActionName">
+                                    </mat-form-field>
+                                </div>
+                                <div class="input-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="8px">
+                                    <mat-form-field fxFlex class="mat-block" appearance="fill">
+                                        <mat-label translate>registration.recaptcha-site-key</mat-label>
+                                        <input matInput formControlName="siteKey" required>
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex class="mat-block" appearance="fill">
+                                        <mat-label translate>registration.recaptcha-secret-key</mat-label>
+                                        <input matInput formControlName="secretKey" required>
+                                    </mat-form-field>
+                                </div>
+                            </section>
+                        </fieldset>
+
+                        <!-- generalSettingsForm -->
+                        <fieldset class="fields-group">
+                            <legend class="group-title" translate>registration.general-settings</legend>
+                            <section formGroupName="generalSettings">
+                                <mat-form-field fxFlex class="mat-block">
+                                    <mat-label translate>registration.notification-email</mat-label>
+                                    <input matInput formControlName="notificationMail">
+                                    <mat-error
+                                        *ngIf="selfRegistrationFormGroup.get('generalSettings.notificationMail').hasError('required')">
+                                        {{ "registration.notification-email-is-required" | translate }}
+                                    </mat-error>
+                                    <mat-error
+                                        *ngIf="selfRegistrationFormGroup.get('generalSettings.notificationMail').hasError('email')">
+                                        {{ "registration.invalid-email-format" | translate }}
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex class="mat-block" floatLabel="always">
+                                    <mat-label translate>registration.text-message-for-signup-page</mat-label>
+                                    <textarea #signUpMessage matInput placeholder="Text Message for signup page"
+                                        maxlength="200" formControlName="signUpPageMessage"></textarea>
+                                    <mat-hint align="end">{{signUpMessage.value.length}} / 200</mat-hint>
+                                </mat-form-field>
+                                <section class="tb-default-dashboard" fxFlex fxLayout="row">
+                                    <tb-dashboard-autocomplete fxFlex="30"
+                                        label="{{ 'registration.default-dashboard' | translate }}"
+                                        formControlName="dashboard" [dashboardsScope]="'tenant'"
+                                        [selectFirstDashboard]="false"></tb-dashboard-autocomplete>
+                                    <div fxFlex fxLayout="column" fxLayoutAlign="start start">
+                                        <mat-checkbox fxFlex formControlName="dashboardFullScreen">
+                                            {{ 'registration.always-fullscreen' | translate }} </mat-checkbox>
+                                    </div>
+                                </section>
+                            </section>
+                        </fieldset>
+
+                        <mat-checkbox style="margin-bottom: 16px;" color="primary"
+                            formControlName="enablemobileSelfRegistration">
+                            {{ 'registration.enable-self-registration-from-mobile-application' | translate }}
+                        </mat-checkbox>
+                        <!-- mobileSettingsForm -->
+                        <fieldset *ngIf="selfRegistrationFormGroup.get('enablemobileSelfRegistration').value"
+                            class="fields-group">
+                            <legend class="group-title" translate>
+                                registration.mobile-application-self-registration-settings
+                            </legend>
+                            <section formGroupName="mobileSettings">
+                                <div fxLayout="column">
+                                    <div fxLayout="row" fxLayoutGap="8px" style="margin: 8px 0 20px;">
+                                        <mat-form-field fxFlex class="mat-block" floatLabel="always">
+                                            <mat-label translate>registration.application-package</mat-label>
+                                            <input matInput formControlName="applicationPackage" id="name3" name="name3"
+                                                placeholder="Application package" required>
+                                            <mat-hint>{{ "registration.android-text" | translate }}</mat-hint>
+                                            <mat-error
+                                                *ngIf="selfRegistrationFormGroup.get('mobileSettings.applicationPackage').invalid">
+                                                {{ "registration.application-package-required" | translate }}
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex class="mat-block">
+                                            <mat-label translate>registration.application-secret</mat-label>
+                                            <textarea matInput mat-autosize rows="1" style="color: black;"
+                                                maxlength="2048"
+                                                formControlName="applicationSecret">{{secretKey}}</textarea>
+                                            <mat-icon matSuffix>
+                                                <tb-copy-button class="attribute-copy" [copyText]="secretKey"
+                                                    tooltipText="{{ 'registration.copy-application-secret' | translate }}"
+                                                    tooltipPosition="above" icon="assignment_return"
+                                                    [style]="{'font-size': '30px'}" color="primary">
+                                                </tb-copy-button>
+                                            </mat-icon>
+                                            <mat-hint align="end">{{secretKey.length}} / 2048</mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxlayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                                        <mat-form-field fxFlex class="mat-block" floatLabel="always">
+                                            <mat-label translate>registration.application-url-scheme</mat-label>
+                                            <input matInput formControlName="applicationUrlScheme"
+                                                placeholder="Application URL scheme" required>
+                                            <mat-error
+                                                *ngIf="selfRegistrationFormGroup.get('mobileSettings.applicationUrlScheme').invalid">
+                                                {{ "registration.application-url-scheme-required" | translate }}
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <span style="display: flex; align-items: center;">://</span>
+                                        <mat-form-field fxFlex class="mat-block" floatLabel="always">
+                                            <mat-label translate>registration.application-url-hostname</mat-label>
+                                            <input matInput formControlName="applicationUrlHostname"
+                                                placeholder="Application URL hostname" autocomplete="off" required>
+                                            <mat-error
+                                                *ngIf="selfRegistrationFormGroup.get('mobileSettings.applicationUrlHostname').invalid">
+                                                {{ "registration.application-url-hostname-required" | translate }}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </section>
+                        </fieldset>
+
+                        <fieldset class="fields-group">
+                            <legend class="group-title" translate>registration.privacy-policy-text</legend>
+                            <div fxLayout="column" fxLayoutGap="8px">
+                                <mat-slide-toggle color="primary" formControlName="showPrivacyPolicy">
+                                    {{ 'registration.show-privacy-policy' | translate }}
+                                </mat-slide-toggle>
+                                <editor [init]="editorConfig" formControlName="privacyPolicy"></editor>
+                            </div>
+                        </fieldset>
+                        <fieldset class="fields-group">
+                            <legend class="group-title" translate>registration.terms-of-use-text</legend>
+                            <div fxLayout="column" fxLayoutGap="8px">
+                                <mat-slide-toggle color="primary" formControlName="showTermOfUse">
+                                    {{ 'registration.show-terms-of-use' | translate }}
+                                </mat-slide-toggle>
+                                <editor [init]="editorConfig" formControlName="termsOfUse"></editor>
+                            </div>
+                        </fieldset>
+                        <!-- <tb-user-group-roles></tb-user-group-roles> -->
+                    </div>
+                </fieldset>
+                <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px" style="padding: 8px;">
+                    <button type="button" mat-raised-button color="warn" [disabled]="isDeleteEnabled"
+                        (click)="delete()">
+                        {{ 'action.delete' | translate }}
+                    </button>
+                    <button mat-button mat-raised-button color="primary"
+                        [disabled]="selfRegistrationFormGroup.invalid || !selfRegistrationFormGroup.dirty || isSaveEnabled">
+                        {{'action.save' | translate}}
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

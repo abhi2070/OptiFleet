@@ -1,0 +1,18 @@
+
+<div class="tb-absolute-fill" fxLayout="column" tb-toast
+     toastTarget="{{ toastTargetId }}">
+  <div fxFlex id="widget-container">
+    <ng-container #widgetContent></ng-container>
+  </div>
+</div>
+<div class="tb-absolute-fill tb-widget-error" *ngIf="widgetErrorData">
+  <span [innerHtml]="('Widget Error:<br/><br/>' + widgetErrorData.message) | safe:'html'"></span>
+</div>
+<div class="tb-absolute-fill tb-widget-no-data" *ngIf="displayNoData">
+  <span fxLayoutAlign="center center"
+        style="display: flex;"
+        class="tb-absolute-fill">{{ noDataDisplayMessageText }}</span>
+</div>
+<div class="tb-absolute-fill tb-widget-loading" [fxShow]="loadingData" fxLayout="column" fxLayoutAlign="center center">
+  <mat-spinner color="accent" mode="indeterminate" diameter="40"></mat-spinner>
+</div>

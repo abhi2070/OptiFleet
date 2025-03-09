@@ -1,0 +1,13 @@
+
+
+version: '3.0'
+
+services:
+  redis:
+    volumes:
+      - redis-data:/bitnami/redis/data
+
+volumes:
+  redis-data:
+    external:
+      name: ${REDIS_DATA_VOLUME}

@@ -1,0 +1,88 @@
+  <div class="mat-padding" fxLayout="column">
+    <form [formGroup]="entityForm" *ngIf="entityForm">
+      <fieldset [disabled]="(isLoading$ | async) || !isEdit">
+        <div class="form-container" style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; margin-top: 8px;">
+          <mat-form-field class="mat-block">
+            <mat-label translate>vehicle.vehiclenumber</mat-label>
+            <input matInput formControlName="vehiclenumber">
+            <mat-error *ngIf="entityForm.get('vehiclenumber').hasError('required') && entityForm.get('vehiclenumber').touched">
+              Vehicle number is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mat-block">
+            <mat-label translate>vehicle.type</mat-label>
+            <mat-select formControlName="vehicleType">
+              <mat-option *ngFor="let type of vehicleTypes" [value]="type.value">
+                {{type.label}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="entityForm.get('vehicleType').hasError('required') && entityForm.get('vehicleType').touched">
+              Vehicle type is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mat-block">
+            <mat-label translate>vehicle.nextService</mat-label>
+            <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+            <input matInput formControlName="nextService" [matDatepicker]="picker">
+            <mat-error *ngIf="entityForm.get('nextService').hasError('required') && entityForm.get('nextService').touched">
+              Next service date is required
+            </mat-error>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="mat-block">
+            <mat-label translate>vehicle.status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let status of vehicleStatuses" [value]="status.value">
+                {{status.label}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="entityForm.get('status').hasError('required') && entityForm.get('status').touched">
+              Status is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mat-block">
+            <mat-label translate>vehicle.device</mat-label>
+            <mat-chip-grid #chipGrid [disabled]="!isEdit || (isLoading$ | async)">
+              <mat-chip-row *ngFor="let device of selectedDevices"
+                           [removable]="isEdit"
+                           (removed)="removeDevice(device)">
+                {{device.name}}
+                <button matChipRemove [disabled]="!isEdit">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+            <input placeholder="Enter Option"
+                   #deviceInput
+                   [formControl]="deviceCtrl"
+                   [matAutocomplete]="auto"
+                   [matChipInputFor]="chipGrid"
+                   [disabled]="!isEdit || (isLoading$ | async)">
+            <mat-autocomplete #auto="matAutocomplete"
+                             [displayWith]="displayFn"
+                             (optionSelected)="selected($event)">
+              <mat-option *ngFor="let device of filteredDevices | async"
+                         [value]="device">
+                {{device.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </fieldset>
+    </form>
+    <div class="delete-button-container" *ngIf="!isEdit">
+      <button mat-raised-button
+              color="warn"
+              class="delete-button"
+              [disabled]="(isLoading$ | async)"
+              (click)="onEntityAction($event, 'delete')"
+              [fxShow]="!hideDelete() && !isEdit">
+        <mat-icon>delete</mat-icon>
+        {{'driver.delete' | translate }}
+      </button>
+    </div>
+  </div>

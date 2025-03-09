@@ -1,0 +1,13 @@
+
+<div mat-dialog-content>
+  <button class="tb-close-button"
+          mat-icon-button
+          (click)="cancel()"
+          type="button">
+    <mat-icon>close</mat-icon>
+  </button>
+  <tb-color-picker-panel [color]="color"
+                         [colorClearButton]="colorClearButton"
+                         (colorSelected)="selectColor($event)">
+  </tb-color-picker-panel>
+</div>

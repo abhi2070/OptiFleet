@@ -1,0 +1,15 @@
+<mat-form-field fxFlex class="mat-block" [formGroup]="threedEntityAliasSettingsFormGroup">
+    <mat-label>3D model URL source entity alias</mat-label>
+    <input matInput type="text" placeholder="{{ 'entity.entity-alias' | translate }}" #entityAliasInput
+        (focusin)="onEntityAliasFocus()" formControlName="entityAlias" [matAutocomplete]="entityAliasAutocomplete">
+    <button
+        *ngIf="threedEntityAliasSettingsFormGroup.get('entityAlias').value && !threedEntityAliasSettingsFormGroup.get('entityAlias').disabled"
+        type="button" matSuffix mat-icon-button aria-label="Clear" (click)="clearEntityAlias()">
+        <mat-icon class="material-icons">close</mat-icon>
+    </button>
+    <mat-autocomplete class="tb-autocomplete" #entityAliasAutocomplete="matAutocomplete">
+        <mat-option *ngFor="let entityAlias of filteredEntityAliases | async" [value]="entityAlias">
+            <span [innerHTML]="entityAlias | highlight:aliasSearchText"></span>
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

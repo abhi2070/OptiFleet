@@ -1,0 +1,127 @@
+<mat-toolbar color="primary">
+    <h2 translate>trip.add</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="cancel()" type="button">
+      <mat-icon class="material-icons">close</mat-icon>
+    </button>
+  </mat-toolbar>
+  
+  <mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoading$ | async">
+  </mat-progress-bar>
+  <div style="height: 4px;" *ngIf="!(isLoading$ | async)"></div>
+  
+  <div mat-dialog-content>
+    <form [formGroup]="tripForm" (ngSubmit)="save()">
+      <fieldset [disabled]="isLoading$ | async">
+        <mat-form-field class="mat-block">
+          <mat-label translate>trip.name</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="tripForm.get('name').hasError('required')">
+            Trip name is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="mat-block">
+          <mat-label translate>trip.status</mat-label>
+          <input matInput formControlName="status" required>
+          <mat-error *ngIf="tripForm.get('status').hasError('required')">
+            Trip status is required
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="mat-block">
+          <mat-label translate>trip.startDate</mat-label>
+          <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" required>
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+          <mat-error *ngIf="tripForm.get('startDate').hasError('required')">
+            Start date is required
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="mat-block">
+          <mat-label translate>trip.expectedEndDate</mat-label>
+          <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" required>
+          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+          <mat-error *ngIf="tripForm.get('endDate').hasError('required')">
+            Expected end date is required
+          </mat-error>
+          <mat-error *ngIf="tripForm.hasError('dateRange')">
+            End date must be after start date
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="mat-block">
+          <mat-label translate>trip.vehicleType</mat-label>
+          <mat-select formControlName="vehicleType" required (selectionChange)="onVehicleTypeChange($event)">
+            <mat-option *ngFor="let type of vehicleTypeOptions" [value]="type.value">
+              {{ type.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="tripForm.get('vehicleType').hasError('required')">
+            Vehicle type is required
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="mat-block">
+          <mat-label translate>vehicle.vehicle</mat-label>
+          <mat-select formControlName="assignedVehicle" required>
+            <mat-option *ngFor="let vehicle of availableVehicles$ | async" [value]="vehicle.id.id">
+              {{ vehicle.vehiclenumber }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="tripForm.get('assignedVehicle').hasError('required')">
+            Vehicle selection is required
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="mat-block">
+          <mat-label translate>driver.drivers</mat-label>
+          <mat-select formControlName="assignedDriver" multiple required>
+            <mat-option *ngFor="let driver of availableDrivers$ | async" [value]="driver.id.id">
+              {{ driver.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="tripForm.get('assignedDriver').hasError('required')">
+            At least one driver is required
+          </mat-error>
+        </mat-form-field>
+        <div formGroupName="sourcePosition">
+          <mat-form-field class="mat-block">
+            <mat-label translate>trip.sourceAddress</mat-label>
+            <input matInput
+                   id="sourceAddress"
+                   formControlName="address"
+                   required
+                   placeholder="Enter source address">
+            <mat-error *ngIf="tripForm.get('sourcePosition.address').hasError('required')">
+              Source address is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div formGroupName="destinationPosition">
+          <mat-form-field class="mat-block">
+            <mat-label translate>trip.destinationAddress</mat-label>
+            <input matInput
+                   id="destinationAddress"
+                   formControlName="address"
+                   required
+                   placeholder="Enter destination address">
+            <mat-error *ngIf="tripForm.get('destinationPosition.address').hasError('required')">
+              Destination address is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancel()" [disabled]="isLoading$ | async">
+      {{ 'action.cancel' | translate }}
+    </button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="tripForm.invalid || (isLoading$ | async)">
+      {{ 'action.add' | translate }}
+    </button>
+  </div>

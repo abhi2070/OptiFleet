@@ -1,0 +1,52 @@
+<ng-container *ngIf="panelMode; else componentMode">
+    <ng-container *ngTemplateOutlet="reportFilterPanel"></ng-container>
+</ng-container>
+<ng-template #componentMode>
+    <ng-container *ngIf="buttonMode; else reportFilter">
+        <button color="primary" matTooltip="{{buttonDisplayValue}}" matTooltipPosition="above" mat-stroked-button
+            (click)="toggleReportFilterPanel($event)">
+            <mat-icon>filter_list</mat-icon>{{buttonDisplayValue}}
+        </button>
+    </ng-container>
+</ng-template>
+<ng-template #reportFilterPanel>
+    <form fxLayout="column" class="mat-content mat-padding" (ngSubmit)="update()">
+        <ng-container *ngTemplateOutlet="reportFilter"></ng-container>
+        <div fxLayout="row" class="tb-panel-actions" fxLayoutAlign="end center">
+            <button type="button" mat-button (click)="cancel()">
+                {{ 'action.cancel' | translate }}
+            </button>
+            <button type="submit" mat-raised-button color="primary"
+                [disabled]="reportFilterForm.invalid || !reportFilterForm.dirty">
+                {{ 'action.show' | translate }}
+            </button>
+        </div>
+    </form>
+</ng-template>
+<ng-template #reportFilter>
+    <div fxLayout="column" fxLayoutGap="10px" style="min-width: 280px;" [formGroup]="reportFilterForm">
+        <mat-form-field>
+            <mat-label translate>report.category</mat-label>
+            <mat-select formControlName="reportCategory" (selectionChange)="onCategoryChange($event)">
+                <mat-option *ngFor="let category of reportCategory" [value]="category.id">
+                    {{ category.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="reportFilterForm.controls['reportCategory'].hasError('required')">
+                {{ "report.select-report-category" | translate }}
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label translate>report.available</mat-label>
+            <mat-select formControlName="reportAvailable">
+                <mat-option *ngFor="let option of availableOptions" [value]="option.value">
+                    {{ option.label }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="reportFilterForm.controls['reportAvailable'].hasError('required')">
+                {{ "report.select-report-available" | translate }}
+            </mat-error>
+        </mat-form-field>
+    </div>
+</ng-template>
+

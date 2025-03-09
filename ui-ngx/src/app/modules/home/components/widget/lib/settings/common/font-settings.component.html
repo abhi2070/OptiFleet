@@ -1,0 +1,9 @@
+
+<button type="button"
+        mat-stroked-button
+        class="tb-box-button"
+        [disabled]="disabled"
+        #matButton
+        (click)="openFontSettingsPopup($event, matButton)">
+  <tb-icon matButtonIcon>text_format</tb-icon>
+</button>

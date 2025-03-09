@@ -1,0 +1,26 @@
+name,type,location,temperature,humidity,access token
+DeviceOne,TypeOne,Pune,55,42,abstop22594
+DeviceTwo,TypeTwo,Bengaluru,37,66,cprtxr37104
+DeviceThree,TypeThree,Lucknow,42,53,bbstxp11299
+DeviceFour,TypeFour,Delhi,20,58,ezxtui90105
+DeviceFive,TypeFive,Kolkata,61,45,mnbuv78543
+DeviceSix,TypeSix,Vadodara,33,14,pqrsz12670
+DeviceSeven,TypeSeven,Agra,26,45,wxyzl03629
+DeviceEight,TypeEight,Kochi,57,63,vwxyz74102
+DeviceNine,TypeNine,Jaipur,49,65,qrstu93516
+DeviceTen,TypeTen,Kanpur,72,52,fghij20847
+DeviceEleven,TypeEleven,Chennai,67,26,nopqr35216
+DeviceTwelve,TypeTwelve,Visakhapatnam,17,57,stuvw69412
+DeviceThirteen,TypeThirteen,Bhubaneswar,21,49,lmnop48123
+DeviceFourteen,TypeFourteen,Mumbai,32,72,uvwxy21549
+DeviceFifteen,TypeFiveteen,Ahemdabad,38,67,bcdef94362
+DeviceSixteen,TypeSixteen,Hyderabad,43,17,mnopr08513
+DeviceSeventeen,TypeSeventeen,Surat,25,21,ghijk32674
+DeviceEighteen,TypeEighteen,Chandigarh,45,32,xyzab62735
+DeviceNineteen,TypeNineteen,Coimbatore,63,78,defgh76321
+DeviceTwenty,TypeTwenty,Agra,65,66,hijkl57402
+DeviceTwentyOne,TypeTwentyOne,Mumbai,52,79,opqrs23865
+DeviceTwentyTwo,TypeTwentyTwo,Ahemdabad,53,42,klmno43026
+DeviceTwentyThree,TypeTwentyThree,Hyderabad,58,20,tuvwx74281
+DeviceTwentyFour,TypeTwentyFour,Surat,45,61,bcstu63491
+DeviceTwentyFive,TypeTwentyFive,Chandigarh,14,33,uvwxy80436

@@ -1,0 +1,33 @@
+@import 'src/scss/constants';
+
+:host {
+  height: 100%;
+  display: grid;
+  grid-template-rows: min-content 4px auto min-content;
+
+  .mat-dialog-content {
+    padding: 24px;
+
+    .mat-block {
+      margin-bottom: 16px;
+      width: 100%;
+    }
+  }
+
+  [mat-dialog-actions] {
+    padding: 16px 24px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
+
+  @media #{$mat-sm} {
+    min-width: 470px;
+  }
+
+  @media #{$mat-gt-sm} {
+    min-width: 650px;
+  }
+}
+

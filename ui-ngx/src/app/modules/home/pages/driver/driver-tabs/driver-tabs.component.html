@@ -1,0 +1,4 @@
+<mat-tab *ngIf="entity"
+         label="{{ 'driver.driverDocument' | translate }}" #driverTab="matTab">
+   <tb-driver-profile [active]="driverTab.isActive" [entityId]="entity.id"></tb-driver-profile>
+</mat-tab>

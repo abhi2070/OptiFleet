@@ -1,0 +1,104 @@
+<div class="document-upload-container">
+  <div class="header-content">
+  </div>
+
+  <div class="document-accordion">
+    <div *ngFor="let doc of documentTypes" class="document-panel">
+      <div
+        class="document-panel-header"
+        (click)="toggleDocumentExpansion(doc)"
+      >
+        <div class="document-header">
+          <mat-icon>{{ doc.icon }}</mat-icon>
+          <span>{{ doc.title }}</span>
+        </div>
+        <mat-icon class="expand-icon">
+          {{ doc.isExpanded ? 'expand_less' : 'expand_more' }}
+        </mat-icon>
+      </div>
+
+      <div
+        class="document-panel-content"
+        [class.expanded]="doc.isExpanded"
+      >
+        <div class="document-upload-zone">
+          <ng-container *ngIf="!documents[doc.key].pdfFile && !documents[doc.key].pdfPreview">
+            <input
+              type="file"
+              [id]="doc.key + 'FileInput'"
+              (change)="onFileSelected($event, doc.key)"
+              accept="application/pdf"
+              style="display: none;"
+              #fileInput
+            >
+            <div
+              class="dropzone"
+              (click)="fileInput.click()"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              (drop)="onDropFile($event, doc.key)"
+            >
+              <mat-icon class="upload-icon">cloud_upload</mat-icon>
+              <p class="upload-text">Click to upload or drag and drop</p>
+              <p class="upload-text-pdf">PDF only, max 200KB</p>
+            </div>
+          </ng-container>
+
+          <div class="preview-section" *ngIf="documents[doc.key].pdfPreview">
+            <iframe
+              [src]="documents[doc.key].pdfPreview"
+              class="pdf-preview"
+              frameborder="0"
+            ></iframe>
+          </div>
+        </div>
+
+        <div class="selected-file" *ngIf="documents[doc.key].pdfFile || documents[doc.key].pdfPreview">
+          <button 
+          mat-button 
+          color="warn" 
+          aria-label="Delete file" 
+          (click)="removeFile(doc.key)">
+          Delete
+          <mat-icon>delete</mat-icon>
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="action-buttons">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="uploadAllDocuments()"
+      [disabled]="!hasAnyDocuments() || isUploading || isLoading"
+      class="upload-all-btn"
+    >
+      <mat-icon>{{ isUploading ? 'hourglass_empty' : 'cloud_upload' }}</mat-icon>
+      {{ isUploading ? 'Uploading...' : 'Save' }}
+    </button>
+
+    <button mat-raised-button
+      color="accent"
+      [disabled]="!isVerifyButtonEnabled()"
+      (click)="verifyDocument()"
+      class="verify-button">
+      <mat-icon>{{ isVerifying ? 'hourglass_empty' : 'verified' }}</mat-icon>
+      {{ isVerifying ? 'Verifying...' : 'Verify' }}
+    </button>
+  </div>
+
+  <div *ngIf="verificationStatus"
+    [class.success]="verificationStatus.success"
+    [class.error]="!verificationStatus.success">
+    {{ verificationStatus.message }}
+  </div>
+
+  <mat-progress-bar
+    *ngIf="isUploading || isLoading"
+    mode="indeterminate"
+    class="upload-progress"
+  ></mat-progress-bar>
+</div>

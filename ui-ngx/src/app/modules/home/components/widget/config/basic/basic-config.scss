@@ -1,0 +1,11 @@
+
+@import '../../../../../../../scss/constants';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  @media #{$mat-xs} {
+    gap: 8px;
+  }
+}

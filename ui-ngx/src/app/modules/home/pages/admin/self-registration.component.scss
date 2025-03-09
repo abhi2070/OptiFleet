@@ -1,0 +1,63 @@
+@import "../../../../../scss/constants";
+
+:host {
+    .mat-mdc-card.settings-card {
+        margin: 8px;
+
+        .fields-group {
+            padding: 0 16px 8px;
+            margin: 10px 0;
+            border: 1px groove rgba(0, 0, 0, .25);
+            border-radius: 4px;
+
+            legend {
+                color: rgba(0, 0, 0, .7);
+            }
+
+            .input-row {
+                padding: 8px 8px 0;
+            }
+        }
+
+        .mat-blocks {
+            @media #{$mat-gt-xs} {
+                width: 50%;
+            }
+        }
+
+        @media #{$mat-md} {
+            width: 90%;
+        }
+
+        @media #{$mat-md} {
+            width: 80%;
+        }
+
+        @media #{$mat-gt-md} {
+            width: 60%;
+        }
+
+    }
+
+    .tb-default-dashboard {
+        tb-dashboard-autocomplete {
+            @media #{$mat-gt-sm} {
+                padding-right: 12px;
+            }
+
+            @media #{$mat-lt-md} {
+                padding-bottom: 12px;
+            }
+        }
+
+        .mat-mdc-checkbox {
+            @media #{$mat-gt-sm} {
+                margin-top: 16px;
+            }
+        }
+    }
+
+    .attribute-copy {
+        display: flex;
+    }
+}

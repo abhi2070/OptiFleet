@@ -1,0 +1,32 @@
+<section class="tb-widget-settings" [formGroup]="threedEnvironmentSettingsFormGroup">
+    <fieldset class="fields-group">
+        <legend class="group-title">Environment settings</legend>
+
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="10px" fxLayoutAlign="center center"
+            style="margin-bottom: 10px">
+            <mat-slide-toggle formControlName="useAlias" fxFlex="20">Use Alias</mat-slide-toggle>
+
+            <tb-threed-entity-alias-settings fxFlex="40"
+                [aliasController]="aliasController"
+                formControlName="threedEntityAliasSettings"
+                (onEntityAliasChanged)="onEntityAliasChanged()">
+            </tb-threed-entity-alias-settings>
+
+            <tb-threed-entity-key-settings fxFlex="40" #entityKeySettings 
+                [aliasController]="aliasController"
+                formControlName="threedEntityKeySettings"
+                [entityAlias]="threedEnvironmentSettingsFormGroup.get('threedEntityAliasSettings').value">
+            </tb-threed-entity-key-settings>
+        </div>
+        <tb-threed-object-settings 
+        label="Environment"
+        [sceneEditor]="sceneEditor"
+        [customObjectId]="ENVIRONMENT_ID"
+        [aliasController]="aliasController" 
+        formControlName="objectSettings"
+        [entityAttribute]="entityAttribute"
+        [deletable]=false 
+        #threedObjectSettings>
+        </tb-threed-object-settings>
+    </fieldset>
+</section>

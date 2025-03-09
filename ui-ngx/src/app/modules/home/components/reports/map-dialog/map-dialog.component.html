@@ -1,0 +1,50 @@
+<div class="map-container">
+  <google-map
+    #map
+    [center]="center"
+    [zoom]="zoom"
+    [options]="options"
+    width="100%"
+    height="100%">
+    
+    <map-marker
+    *ngIf="originMarker"
+    [position]="originMarker.position"
+    [options]="originMarker.options"
+    (mapClick)="onMarkerClick({
+      type: 'origin',
+      position: originMarker.position,
+      title: 'Origin',
+      data: selectedTrip?.sourcePosition
+    })">
+  </map-marker>
+  <map-marker
+    *ngIf="currentPositionMarker"
+    [position]="currentPositionMarker.position"
+    [options]="currentPositionMarker.options"
+    (mapClick)="onMarkerClick({
+      type: 'current',
+      position: currentPositionMarker.position,
+      title: 'Current Position',
+      data: selectedTrip?.currentPosition
+    })">
+  </map-marker>
+  <map-marker
+    *ngIf="destinationMarker"
+    [position]="destinationMarker.position"
+    [options]="destinationMarker.options"
+    (mapClick)="onMarkerClick({
+      type: 'destination',
+      position: destinationMarker.position,
+      title: 'Destination',
+      data: selectedTrip?.destinationPosition
+    })">
+  </map-marker>
+    
+    <map-polyline
+      *ngIf="routePath"
+      [path]="routePath"
+      [options]="routeOptions">
+    </map-polyline>
+  </google-map>
+</div>

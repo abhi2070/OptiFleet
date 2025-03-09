@@ -1,0 +1,19 @@
+<section class="tb-widget-settings" [formGroup]="threedSimpleOrbitWidgetSettingsForm">
+  <fieldset class="fields-group">
+
+    <legend class="group-title">Model settings</legend>
+
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="10px" fxLayoutAlign="center center"
+      style="margin-bottom: 10px">
+      <mat-slide-toggle formControlName="useAttribute" fxFlex="50">Use Attribute</mat-slide-toggle>
+
+      <tb-threed-entity-key-settings fxFlex="50" #entityKeySettings [aliasController]="aliasController"
+        formControlName="threedEntityKeySettings" [entityAlias]="entityAlias">
+      </tb-threed-entity-key-settings>
+    </div>
+
+    <tb-threed-model-input #modelInput label="3D model" formControlName="modelUrl">
+    </tb-threed-model-input>
+
+  </fieldset>
+</section>

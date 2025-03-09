@@ -1,0 +1,84 @@
+<form [formGroup]="entityForm" (ngSubmit)="save()">
+  <mat-toolbar color="primary">
+    <h2>{{ 'vehicle.add-vehicle-text' | translate }}</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="cancel()" type="button">
+      <mat-icon class="material-icons">close</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div mat-dialog-content>
+    <div class="mat-padding" fxLayout="column">
+      <mat-form-field class="mat-block">
+        <mat-label translate>vehicle.vehiclenumber</mat-label>
+        <input matInput formControlName="vehiclenumber">
+        <mat-error *ngIf="entityForm.get('vehiclenumber').hasError('required') && entityForm.get('vehiclenumber').touched">
+          {{'vehicle.vehiclenumber-required' | translate}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mat-block">
+        <mat-label translate>vehicle.type</mat-label>
+        <mat-select formControlName="vehicleType">
+          <mat-option *ngFor="let type of vehicleTypes" [value]="type.value">
+            {{type.label}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="entityForm.get('vehicleType').hasError('required') && entityForm.get('vehicleType').touched">
+          {{'vehicle.type-required' | translate}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mat-block">
+        <mat-label translate>vehicle.nextService</mat-label>
+        <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+        <input matInput formControlName="nextService" [matDatepicker]="picker">
+        <mat-error *ngIf="entityForm.get('nextService').hasError('required') && entityForm.get('nextService').touched">
+          {{'vehicle.nextService-required' | translate}}
+        </mat-error>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="mat-block">
+        <mat-label translate>vehicle.device</mat-label>
+        <mat-chip-grid #chipGrid>
+          <mat-chip-row *ngFor="let device of selectedDevices"
+                        [removable]="true"
+                        (removed)="removeDevice(device)">
+            {{device.name}}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input placeholder="Enter Option"
+               #deviceInput
+               [formControl]="deviceCtrl"
+               [matAutocomplete]="auto"
+               [matChipInputFor]="chipGrid">
+        <mat-autocomplete #auto="matAutocomplete"
+                         [displayWith]="displayFn"
+                         (optionSelected)="selected($event)">
+          <mat-option *ngFor="let device of filteredDevices | async"
+                      [value]="device">
+            {{device.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+    <button mat-button color="primary"
+            type="button"
+            [disabled]="(isLoading$ | async)"
+            (click)="cancel()">
+      {{ 'action.cancel' | translate }}
+    </button>
+    <button mat-raised-button color="primary"
+            type="submit"
+            [disabled]="(isLoading$ | async) || entityForm.invalid || !entityForm.dirty">
+      {{ 'action.save' | translate }}
+    </button>
+  </div>
+</form>

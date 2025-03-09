@@ -1,0 +1,34 @@
+<div>
+    <mat-card appearance="outlined" class="settings-card">
+        <mat-card-header>
+        <mat-card-title>
+            <span class="mat-headline-5" translate>white-labelling.custom-menu</span>
+        </mat-card-title>
+        <span fxFlex></span>
+        <div tb-help="securitySettings"></div>
+        </mat-card-header>
+        <mat-card-content>
+            <form>
+
+               <mat-hint>Define custom menu JSON below. This JSON contains list of custom menu items. </mat-hint>
+
+               <tb-protobuf-content
+                    fxFlex
+                    label="{{ 'white-labelling.custom-menu' | translate }}"
+                    [fillHeight]="true">
+                </tb-protobuf-content>
+
+                <div fxLayout="row" fxLayoutAlign="end center" style="margin-top: 20px;">
+
+                    <button mat-raised-button color="warn" [disabled]="isDisabledDelete" (click)="save()">
+                      {{ 'action.save' | translate }}
+                    </button>
+                  </div>
+
+
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+

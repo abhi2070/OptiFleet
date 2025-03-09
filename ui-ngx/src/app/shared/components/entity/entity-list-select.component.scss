@@ -1,0 +1,13 @@
+
+:host {
+}
+
+:host ::ng-deep {
+  tb-entity-list {
+    &.tb-not-empty {
+      .mat-mdc-form-field-flex {
+        padding-top: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+.example-small-box, .example-large-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px;
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .configuration{
+    margin-top: 20px;
+  }
+
+  .example-full-width {
+    width: 100%;
+  }
+
+  .toggle{
+    margin-top: 8px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .mat-form-field {
+    display: flex;
+    align-items: center;
+  }
+
+  .mat-datepicker-toggle {
+    margin-right: 8px;
+  }
+
+  .mat-input-element {
+    flex-grow: 1;
+  }
+
+  .timezone{
+    margin-top: 16px;
+  }
+  .generateReport{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .generate-button{
+    background-color: #699fff;
+    color: white;
+  }

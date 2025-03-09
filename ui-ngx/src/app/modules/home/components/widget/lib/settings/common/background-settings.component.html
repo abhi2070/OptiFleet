@@ -1,0 +1,14 @@
+
+<button type="button"
+        mat-stroked-button
+        class="tb-box-button tb-background-settings"
+        [disabled]="disabled"
+        #matButton
+        (click)="openBackgroundSettingsPopup($event, matButton)">
+  <div class="tb-color-preview box" [ngClass]="{'disabled': disabled}">
+    <div class="tb-color-result" [style]="backgroundStyle$ | async">
+      <div class="tb-color-overlay" [style]="overlayStyle">
+      </div>
+    </div>
+  </div>
+</button>

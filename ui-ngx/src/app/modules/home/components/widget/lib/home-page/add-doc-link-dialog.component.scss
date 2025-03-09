@@ -1,0 +1,15 @@
+
+:host {
+  .tb-add-doc-link-dialog {
+    width: 480px;
+    .mat-toolbar-single-row {
+      padding: 0 24px;
+    }
+    h2 {
+      color: rgba(0, 0, 0, 0.76);
+    }
+    .mat-icon {
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+}

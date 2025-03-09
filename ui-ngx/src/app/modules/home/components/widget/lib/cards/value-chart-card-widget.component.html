@@ -1,0 +1,9 @@
+
+<div class="tb-value-chart-card-panel" [style]="backgroundStyle$ | async">
+  <div class="tb-value-chart-card-overlay" [style]="overlayStyle"></div>
+  <ng-container *ngTemplateOutlet="widgetTitlePanel"></ng-container>
+  <div #valueChartCardContent class="tb-value-chart-card-content" [class]="layout">
+    <div *ngIf="showValue" class="tb-value-chart-card-value" #valueChartCardValue [style]="valueStyle" [style.color]="valueColor.color">{{ valueText }}</div>
+    <div class="tb-value-chart-card-chart" #chartElement></div>
+  </div>
+</div>

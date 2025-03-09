@@ -1,0 +1,36 @@
+<section class="tb-widget-settings" [formGroup]="threedCameraSettingsFormGroup">
+    <fieldset class="fields-group">
+        <legend class="group-title">Camera settings</legend>
+
+        <div fxLayout="row" fxLayoutGap="8px">
+            <mat-form-field fxFlex>
+                <mat-label>Near plane</mat-label>
+                <input matInput type="number" formControlName="near">
+                <mat-error *ngIf="threedCameraSettingsFormGroup.get('near').hasError('min')">
+                    Must be a positive number
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <mat-label>Far plane</mat-label>
+                <input matInput type="number" formControlName="far">
+                <mat-error *ngIf="threedCameraSettingsFormGroup.get('far').hasError('min')">
+                    Must be a positive number
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex>
+                <mat-label>Field of View</mat-label>
+                <input matInput type="number" formControlName="fov">
+                <mat-error *ngIf="threedCameraSettingsFormGroup.get('fov').hasError('min')">
+                    Must be a positive number
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <tb-threed-vector-settings label="Initial Position"
+            formControlName="initialPosition"></tb-threed-vector-settings>
+        <tb-threed-vector-settings label="Initial Rotation"
+            formControlName="initialRotation"></tb-threed-vector-settings>
+    </fieldset>
+</section>

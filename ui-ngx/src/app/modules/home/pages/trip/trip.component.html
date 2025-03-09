@@ -1,0 +1,522 @@
+<mat-drawer-container hasBackdrop="false" class="tb-absolute-fill">
+  <div class="mat-padding tb-entity-table tb-absolute-fill">
+    <div fxLayout="column" class="tb-entity-table-content tb-outlined-border">
+      <mat-toolbar color="primary" class="header-section mat-elevation-z2">
+        <span class="mat-headline-5">Trips Management</span>
+        <span class="toolbar-spacer"></span>
+        <div class="action-buttons">
+          <button mat-mini-fab color="accent" (click)="openAddDialog()" matTooltip="Add new trip">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Refresh" (click)="loadTrips()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label class="search">Search trips</mat-label>
+            <input matInput placeholder="Search..." (keyup)="searchTerm$.next($event.target.value)">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-toolbar>
+
+      <mat-drawer-container hasBackdrop="false" class="content-area">
+        <div fxLayout="row" class="tb-absolute-fill">
+          <div  #leftPanelContainer
+          class="left-panel-container"
+          [class.collapsed]="isLeftPanelCollapsed">
+          <div class="panel-toggle-handle" (click)="toggleLeftPanel($event)">
+            <mat-icon>{{ isLeftPanelCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+          </div>
+
+            <mat-card class="left-panel">
+              <div class="section-container">
+                <div class="section-header">
+                  <mat-icon>directions_car</mat-icon>
+                  <span>Live Trips ({{liveTripCount}})</span>
+                </div>
+                <div class="trips-list-container scroll-shadow">
+                  <div class="trips-list">
+                    <div *ngFor="let trip of liveTrips"
+                         class="trip-item"
+                         [class.selected]="selectedTrip?.id?.id === trip.id?.id"
+                         (click)="onTripSelected(trip)">
+                      <div class="trip-content">
+                        <div class="route" *ngIf="trip.sourcePosition && trip.destinationPosition">
+                          {{trip.sourcePosition?.address || 'N/A'}} → {{trip.destinationPosition?.address || 'N/A'}}
+                        </div>
+                        <div class="description">{{trip.name || 'Unnamed Trip'}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-container">
+                <div class="section-header">
+                  <mat-icon>schedule</mat-icon>
+                  <span>Scheduled Trips ({{scheduledTripCount}})</span>
+                </div>
+                <div class="trips-list-container scroll-shadow">
+                  <div class="trips-list">
+                    <div *ngFor="let trip of scheduledTrips"
+                         class="trip-item"
+                         [class.selected]="selectedTrip?.id?.id === trip.id?.id"
+                         (click)="onTripSelected(trip)">
+                      <div class="trip-content">
+                        <div class="route" *ngIf="trip.sourcePosition && trip.destinationPosition">
+                          {{trip.sourcePosition?.address || 'N/A'}} → {{trip.destinationPosition?.address || 'N/A'}}
+                        </div>
+                        <div class="description">{{trip.name || 'Unnamed Trip'}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+
+          <mat-card [ngClass]="{
+            'map-container': true,
+            'map-expanded': isLeftPanelCollapsed,
+            'map-compressed-left': !isLeftPanelCollapsed
+          }" class="mat-elevation-z2">
+            <mat-card-header *ngIf="routeInfo" class="route-info">
+              <div class="route-stats">
+                <div class="stats-container">
+                  <span class="stat-item">
+                    <mat-icon>timeline</mat-icon>
+                    Total Distance: {{routeInfo.distance}} km
+                  </span>
+                  <span class="stat-item">
+                    <mat-icon>access_time</mat-icon>
+                    Total ETA: {{routeInfo.duration}} min
+                  </span>
+                  <span class="stat-item remaining">
+                    <mat-icon>directions_car</mat-icon>
+                    Remaining: {{routeInfo.remainingDistance}} km ({{routeInfo.remainingDuration}} min)
+                  </span>
+                </div>
+              </div>
+            </mat-card-header>
+            <mat-card-content class="map-content">
+              <tb-map-dialog #mapDialog
+                [selectedTrip]="selectedTrip"
+                [showCurrentPosition]="true"
+                [showRoute]="true"
+                (routeInfoUpdated)="onRouteInfoUpdated($event)"
+                (markerClicked)="handleMarkerClick($event)">
+              </tb-map-dialog>
+            </mat-card-content>
+          </mat-card>
+
+          <div #rightPanelContainer class="right-panel-container" [class.collapsed]="isRightPanelCollapsed">
+            <div class="panel-toggle-handle" (click)="toggleRightPanel($event)">
+              <mat-icon>{{ isRightPanelCollapsed ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+            </div>
+          
+            <mat-card class="right-panel">
+              <mat-tab-group animationDuration="200ms" backgroundColor="primary">
+                <!-- Overview Tab -->
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon class="tab-icon">dashboard</mat-icon>
+                    Overview
+                  </ng-template>
+          
+                  <div class="tab-content">
+                    <!-- Trip Details Section -->
+                    <mat-expansion-panel expanded="true" *ngIf="selectedTrip" class="custom-panel">
+                      <mat-expansion-panel-header class="custom-header">
+                        <div class="header-content">
+                          <mat-panel-title>Trip Details</mat-panel-title>
+                        </div>
+                      </mat-expansion-panel-header>
+          
+                      <div class="trip-item-content">
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>info</mat-icon>
+                            <span>Trip Name</span>
+                          </div>
+                          <div class="detail-value">{{selectedTrip.name}}</div>
+                        </div>
+          
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>my_location</mat-icon>
+                            <span>Source</span>
+                          </div>
+                          <div class="detail-value">{{selectedTrip.sourcePosition.address}}</div>
+                        </div>
+          
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>location_on</mat-icon>
+                            <span>Destination</span>
+                          </div>
+                          <div class="detail-value">{{selectedTrip.destinationPosition.address}}</div>
+                        </div>
+          
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>access_time</mat-icon>
+                            <span>Start Date</span>
+                          </div>
+                          <div class="detail-value">{{selectedTrip.startDate | date:'MM/dd/yyyy'}}</div>
+                        </div>
+          
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>timer</mat-icon>
+                            <span>End Date</span>
+                          </div>
+                          <div class="detail-value">{{selectedTrip.endDate | date:'MM/dd/yyyy'}}</div>
+                        </div>
+          
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>flag</mat-icon>
+                            <span>Status</span>
+                          </div>
+                          <div class="detail-value">{{selectedTrip.status}}</div>
+                        </div>
+                      </div>
+          
+                      <button mat-raised-button
+                              color="warn"
+                              class="stop-button"
+                              *ngIf="selectedTrip.status === 'LIVE'"
+                              (click)="openStopTripDialog(selectedTrip)">
+                        <mat-icon>stop</mat-icon>
+                        STOP TRIP
+                      </button>
+                      <button mat-raised-button
+                              color="accent"
+                              class="start-button"
+                              *ngIf="selectedTrip.status === 'SCHEDULED'"
+                              (click)="openStartTripDialog(selectedTrip)">
+                        <mat-icon>play_arrow</mat-icon>
+                        START TRIP
+                      </button>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel expanded="false" *ngIf="selectedTrip" class="custom-panel">
+                      <mat-expansion-panel-header class="custom-header">
+                        <div class="header-content">
+                          <mat-panel-title>Vehicle</mat-panel-title>
+                        </div>
+                      </mat-expansion-panel-header>
+          
+                      <div class="trip-item-content" *ngIf="selectedTrip && selectedVehicle">
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>directions_car</mat-icon>
+                            <span>ID</span>
+                          </div>
+                          <div class="detail-value">{{selectedTrip.assignedVehicle}}</div>
+                        </div>
+          
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>category</mat-icon>
+                            <span>Type</span>
+                          </div>
+                          <div class="detail-value">{{selectedVehicle.type}}</div>
+                        </div>
+          
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>pin</mat-icon>
+                            <span>Number</span>
+                          </div>
+                          <div class="detail-value">{{selectedVehicle.vehiclenumber}}</div>
+                        </div>
+          
+                        <div class="detail-item">
+                          <div class="detail-label">
+                            <mat-icon>track_changes</mat-icon>
+                            <span>Status</span>
+                          </div>
+                          <div class="detail-value">{{selectedVehicle.status}}</div>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel expanded="false" *ngIf="selectedTrip" class="custom-panel">
+                      <mat-expansion-panel-header class="custom-header">
+                        <div class="header-content">
+                          <mat-panel-title>Drivers ({{drivers.length}})</mat-panel-title>
+                        </div>
+                      </mat-expansion-panel-header>
+          
+                      <div class="drivers-container" *ngIf="!isLoadingDrivers && drivers.length > 0; else noDrivers">
+                        <mat-accordion>
+                          <mat-expansion-panel *ngFor="let driver of drivers; let i = index" class="custom-panel nested-panel">
+                            <mat-expansion-panel-header class="custom-header">
+                              <div class="header-content">
+                                <mat-panel-title>{{driver.name}}</mat-panel-title>
+                                <mat-panel-description>
+                                  <span [class]="'status-badge ' + driver.status.toLowerCase()">
+                                    {{driver.status}}
+                                  </span>
+                                </mat-panel-description>
+                              </div>
+                            </mat-expansion-panel-header>
+          
+                            <div class="driver-details">
+                              <div class="detail-item">
+                                <div class="detail-label">
+                                  <mat-icon>badge</mat-icon>
+                                  <span>ID</span>
+                                </div>
+                                <div class="detail-value">{{driver.id.id}}</div>
+                              </div>
+          
+                              <div class="detail-item">
+                                <div class="detail-label">
+                                  <mat-icon>phone</mat-icon>
+                                  <span>Contact</span>
+                                </div>
+                                <div class="detail-value">{{driver.phone || 'N/A'}}</div>
+                              </div>
+          
+                              <div class="detail-item">
+                                <div class="detail-label">
+                                  <mat-icon>{{ driver.gender === 'male' ? 'male' : driver.gender === 'female' ? 'female' : 'person' }}</mat-icon>
+                                  <span>Gender</span>
+                                </div>
+                                <div class="detail-value">{{driver.gender || 'N/A'}}</div>
+                              </div>
+          
+                              <div class="detail-item">
+                                <div class="detail-label">
+                                  <mat-icon>card_membership</mat-icon>
+                                  <span>DL</span>
+                                </div>
+                                <div class="detail-value">{{driver.drivingLicenseNumber || 'N/A'}}</div>
+                              </div>
+          
+                              <div class="detail-item">
+                                <div class="detail-label">
+                                  <mat-icon>event</mat-icon>
+                                  <span>DL Validity</span>
+                                </div>
+                                <div class="detail-value">{{driver.drivingLicenseValidity | date:'MM/dd/yyyy' || 'N/A'}}</div>
+                              </div>
+                            </div>
+                          </mat-expansion-panel>
+                        </mat-accordion>
+                      </div>
+          
+                      <ng-template #noDrivers>
+                        <div class="no-drivers" *ngIf="!isLoadingDrivers">
+                          <mat-icon>person_off</mat-icon>
+                          <span>No drivers assigned to this trip</span>
+                        </div>
+                      </ng-template>
+                    </mat-expansion-panel>
+                  </div>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon class="tab-icon">devices</mat-icon>
+                    Devices
+                  </ng-template>
+          
+                  <div class="tab-content" >
+                    <div class="devices-container" *ngIf="!isLoadingDevices && mergedDeviceData?.length > 0; else noDevices">
+                      <mat-accordion>
+                        <mat-expansion-panel *ngFor="let device of mergedDeviceData; let i = index" class="custom-panel">
+                          <mat-expansion-panel-header class="custom-header">
+                            <div class="header-content">
+                              <mat-icon>device_hub</mat-icon>
+                              <mat-panel-title>{{device.name || 'Device ' + (i + 1)}}</mat-panel-title>
+                            </div>
+                          </mat-expansion-panel-header>
+                  
+                          <div class="device-details">
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <span>ID</span>
+                              </div>
+                              <div class="detail-value">{{device.deviceid || 'N/A'}}</div>
+                            </div>
+                  
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <mat-icon>fingerprint</mat-icon>
+                                <span>IMEI</span>
+                              </div>
+                              <div class="detail-value">{{device.imei || 'N/A'}}</div>
+                            </div>
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <mat-icon>speed</mat-icon>
+                                <span>Speed</span>
+                              </div>
+                              <div class="detail-value">{{device.speed || 0}} km/h</div>
+                            </div>
+                  
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <mat-icon>timeline</mat-icon>
+                                <span>RPM</span>
+                              </div>
+                              <div class="detail-value">{{device.rpm || 'N/A'}}</div>
+                            </div>
+                  
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <mat-icon>pin_drop</mat-icon>
+                                <span>Location</span>
+                              </div>
+                              <div class="detail-value">
+                                <ng-container [ngSwitch]="device.addressStatus">
+                                  <ng-container *ngSwitchCase="'success'">
+                                    <span>{{device.address}}</span>
+                                  </ng-container>
+                                  
+                                  <ng-container *ngSwitchCase="'error'">
+                                    <mat-icon class="text-warn">error</mat-icon>
+                                    <span class="ml-2">{{device.address}}</span>
+                                  </ng-container>
+                                  
+                                  <ng-container *ngSwitchCase="'not found'">
+                                    <mat-icon class="text-warn">location_off</mat-icon>
+                                    <span class="ml-2">{{device.address}}</span>
+                                  </ng-container>
+                                  
+                                  <ng-container *ngSwitchDefault>
+                                    <span>{{device.latitude}}, {{device.longitude}}</span>
+                                  </ng-container>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <mat-icon>power_settings_new</mat-icon>
+                                <span>Ignition</span>
+                              </div>
+                              <div class="detail-value status-indicator" [ngClass]="device.ignition.status">
+                                <mat-icon>{{device.ignition.status === 'on' ? 'power' : 'power_off'}}</mat-icon>
+                                <span>{{device.ignition.label}}</span>
+                                <span class="status-timestamp" *ngIf="device.ignition.timestamp">
+                                  Last updated: {{device.ignition.timestamp | date:'short'}}
+                                </span>
+                              </div>
+                            </div>
+                  
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <mat-icon>notification_important</mat-icon>
+                                <span>SOS Status</span>
+                              </div>
+                              <div class="detail-value status-indicator" [ngClass]="device.sos.status">
+                                <mat-icon>{{device.sos.status === 'active' ? 'warning' : 'check_circle'}}</mat-icon>
+                                <span>{{device.sos.label}}</span>
+                              </div>
+                            </div>
+                  
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <mat-icon>security</mat-icon>
+                                <span>Security</span>
+                              </div>
+                              <div class="detail-value status-indicator" [ngClass]="device.armDisarm.status">
+                                <mat-icon>{{device.armDisarm.status === 'armed' ? 'lock' : 'lock_open'}}</mat-icon>
+                                <span>{{device.armDisarm.label}}</span>
+                              </div>
+                            </div>
+                  
+                            <div class="detail-item">
+                              <div class="detail-label">
+                                <mat-icon>battery_charging_full</mat-icon>
+                                <span>Battery</span>
+                              </div>
+                              <div class="detail-value">{{device.internalBattery}}%</div>
+                            </div>
+                  
+                            <div class="detail-item" *ngIf="device.harshEvent">
+                              <div class="detail-label">
+                                <mat-icon>warning</mat-icon>
+                                <span>Harsh Events</span>
+                              </div>
+                              <div class="detail-value">{{device.harshEvent}}</div>
+                            </div>
+                          </div>
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                    </div>
+                  
+                    <ng-template #noDevices>
+                      <div class="no-devices">
+                        <mat-icon>device_unknown</mat-icon>
+                        <span>No devices found for this trip's vehicle</span>
+                      </div>
+                    </ng-template>
+                  </div>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon class="tab-icon">history</mat-icon>
+                    Trip History
+                  </ng-template>
+                          
+                  <div class="trip-history-container">
+                    <div class="timeline-events" *ngIf="!isLoadingHistory && tripHistory?.length > 0">
+                      <mat-card class="timeline-event" *ngFor="let event of tripHistory">
+                        <mat-card-header>
+                          <div class="event-icon" [ngClass]="{'warning': event.type === 'DELAY'}">
+                            <mat-icon>{{getEventIcon(event.type)}}</mat-icon>
+                          </div>
+                          <mat-card-title>{{formatEventType(event.type)}}</mat-card-title>
+                          <mat-card-subtitle>{{event.timestamp | date:'MMM d, h:mm a'}}</mat-card-subtitle>
+                        </mat-card-header>
+                
+                        <mat-card-content>
+                          <div class="event-details-grid">
+                            <div class="trip-info">
+                              <div class="detail-row coordinates">
+                                <mat-icon>gps_fixed</mat-icon>
+                                <span>{{event.coordinates.lat}}, {{event.coordinates.lng}}</span>
+                              </div>
+                
+                              <div class="detail-row location">
+                                <mat-icon>location_on</mat-icon>
+                                <span>{{event.location.address}}</span>
+                              </div>
+                
+                              <div class="detail-row driver">
+                                <mat-icon>person</mat-icon>
+                                <span>Driver: {{event.driverName}}</span>
+                              </div>
+                            </div>
+                
+                            <div class="trip-images" *ngIf="event.images?.length">
+                              <div class="image-grid">
+                                <div 
+                                  class="image-item" 
+                                  *ngFor="let image of event.images"
+                                  (click)="openImageDialog(image)"
+                                >
+                                  <img [src]="image.thumbnailUrl" [alt]="image.description">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </mat-card-content>
+                      </mat-card>
+                    </div>
+                    <div class="no-history" *ngIf="!isLoadingHistory && !tripHistory?.length">
+                      <mat-icon>history</mat-icon>
+                      <p>No trip history available</p>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+            </mat-card>
+          </div>
+        </div>
+      </mat-drawer-container>
+    </div>
+  </div>
+</mat-drawer-container>

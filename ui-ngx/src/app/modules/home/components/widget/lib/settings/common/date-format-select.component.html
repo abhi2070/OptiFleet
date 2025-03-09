@@ -1,0 +1,10 @@
+
+<mat-form-field appearance="outline" subscriptSizing="dynamic" style="width: 100%;">
+  <mat-select [formControl]="dateFormatFormControl" [compareWith]="dateFormatsCompare" >
+    <mat-option *ngFor="let dateFormat of dateFormatList" [value]="dateFormat">{{ dateFormatDisplayValue(dateFormat) }}</mat-option>
+  </mat-select>
+  <button #customFormatButton
+          *ngIf="dateFormatFormControl.value?.custom" matSuffix mat-icon-button (click)="openDateFormatSettingsPopup($event, customFormatButton)">
+    <tb-icon>edit</tb-icon>
+  </button>
+</mat-form-field>

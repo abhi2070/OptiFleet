@@ -1,0 +1,20 @@
+
+<div class="tb-bar-chart-panel" [style]="backgroundStyle$ | async">
+  <div class="tb-bar-chart-overlay" [style]="overlayStyle"></div>
+  <ng-container *ngTemplateOutlet="widgetTitlePanel"></ng-container>
+  <div class="tb-bar-chart-content" [class]="legendClass">
+    <div #chartShape class="tb-bar-chart-shape">
+    </div>
+    <div *ngIf="showLegend" class="tb-bar-chart-legend">
+      <div class="tb-bar-chart-legend-item" *ngFor="let legendItem of legendItems"
+           (mouseenter)="onLegendItemEnter(legendItem)"
+           (mouseleave)="onLegendItemLeave(legendItem)"
+           (click)="toggleLegendItem(legendItem)">
+        <div class="tb-bar-chart-legend-item-label">
+          <div class="tb-bar-chart-legend-item-label-circle" [style]="{background: legendItem.enabled ? legendItem.color : null}"></div>
+          <div [style]="legendItem.enabled ? legendLabelStyle : disabledLegendLabelStyle">{{ legendItem.label }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

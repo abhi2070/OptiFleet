@@ -1,0 +1,37 @@
+<mat-drawer-container>
+    <div class="mat-padding tb-entity-table">
+        <div fxLayout="column" class="tb-entity-table-content tb-outlined-border">
+            <!-- <mat-toolbar class="mat-mdc-table-toolbar" [fxShow]="!textSearchMode && dataSource.selection.isEmpty()"></mat-toolbar> -->
+            <mat-toolbar class="mat-mdc-table-toolbar">
+                <div class="mat-toolbar-tools">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayout.xs="column"
+                        fxLayoutAlign.xs="center start" class="title-container">
+                        <!-- <span *ngIf="entitiesTableConfig.tableTitle" class="tb-entity-table-title">
+                                {{ entitiesTableConfig.tableTitle }}
+                            </span>                             -->
+                        <span class="tb-entity-table-title" translate>
+                            registration.user-group-roles
+                        </span>
+                    </div>
+                    <span fxFlex></span>
+                    <div>
+                        <button mat-icon-button matTooltip="{{ 'action.add' | translate }}" matTooltipPosition="above">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="{{ 'action.search' | translate }}"
+                            matTooltipPosition="above">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="{{ 'action.refresh' | translate }}"
+                            matTooltipPosition="above">
+                            <mat-icon>refresh</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-toolbar>
+            <mat-toolbar class="mat-mdc-table-toolbar">
+
+            </mat-toolbar>
+        </div>
+    </div>
+</mat-drawer-container>

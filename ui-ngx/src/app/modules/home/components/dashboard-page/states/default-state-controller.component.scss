@@ -1,0 +1,16 @@
+
+:host {
+  pointer-events: all;
+  width: min-content; //for Safari
+}
+
+:host ::ng-deep {
+  .mat-mdc-select.default-state-controller {
+    .mat-mdc-select-value {
+      max-width: 200px;
+    }
+    .mat-mdc-select-arrow {
+      width: 24px;
+    }
+  }
+}

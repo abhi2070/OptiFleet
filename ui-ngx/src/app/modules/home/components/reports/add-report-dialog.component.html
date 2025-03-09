@@ -1,0 +1,82 @@
+<mat-toolbar color="primary">
+    <h2 translate>report.add</h2>
+    <span fxFlex></span>
+    <div [tb-help]="'reports'"></div>
+    <button mat-icon-button
+            (click)="cancel()"
+            type="button">
+        <mat-icon class="material-icons">close</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoading$ | async">
+</mat-progress-bar>
+<div mat-dialog-content>
+    <form [formGroup]="addReportFormGroup" style="padding: 16px; padding-bottom: 18px;">
+        <fieldset [disabled]="isLoading$ | async">
+            <mat-form-field class="mat-block">
+                <mat-label translate>report.name</mat-label>
+                <input matInput formControlName="name" required />
+                <mat-error *ngIf="addReportFormGroup.get('name').hasError('required')">
+                    {{ 'report.name-required' | translate }}
+                </mat-error>
+                <mat-error *ngIf="addReportFormGroup.get('name').hasError('maxlength')">
+                    {{ 'report.name-max-length' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <div fxLayout="row" class="tb-entity-select">
+                <mat-form-field style="min-width: 100px; padding-right: 8px;">
+                    <mat-label translate>report.type</mat-label>
+                    <mat-select formControlName="type" required>
+                        <mat-option>
+
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex>
+                    <mat-label translate>report.select-device</mat-label>
+                    <input type="text" matInput formControlName="selectDevice" [matAutocomplete]="auto" required>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
+                        <mat-option *ngFor="" [value]="">
+                            <!-- {{}} -->
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <mat-form-field class="mat-block">
+                <mat-label translate>report.select-device-data</mat-label>
+                <input type="text" matInput formControlName="selectDeviceData" [matAutocomplete]="auto" required>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
+                    <mat-option *ngFor="" [value]="">
+                        <!-- {{}} -->
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <tb-entity-autocomplete
+            useFullEntityId
+            formControlName="customerId"
+            labelText="report.assign-to-client"
+            [entityType]="entityType.CUSTOMER">
+          </tb-entity-autocomplete>
+          <mat-form-field class="mat-block" subscriptSizing="dynamic">
+            <mat-label translate>report.description</mat-label>
+            <textarea matInput formControlName="description" rows="1"></textarea>
+          </mat-form-field>
+        </fieldset>
+    </form>
+</div>
+<div mat-dialog-actions class="tb-dialog-actions">
+    <mat-divider style="width: 100%"></mat-divider>
+    <div class="dialog-actions-row">
+        <button mat-button
+                [disabled]="(isLoading$ | async)"
+                (click)="cancel()">
+            {{ 'action.cancel' | translate }}
+        </button>
+        <button mat-raised-button
+                [disabled]="(isLoading$ | async)"
+                color="primary"
+                (click)="add()">
+            {{ 'action.add' | translate }}
+        </button>
+    </div>
+</div>

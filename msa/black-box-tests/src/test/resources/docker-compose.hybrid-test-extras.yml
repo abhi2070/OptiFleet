@@ -1,0 +1,9 @@
+
+
+version: '3.0'
+
+services:
+  cassandra:
+    environment:
+      HEAP_NEWSIZE: 128M
+      MAX_HEAP_SIZE: 1024M

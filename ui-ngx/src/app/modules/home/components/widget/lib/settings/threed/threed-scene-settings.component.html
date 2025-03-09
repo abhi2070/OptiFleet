@@ -1,0 +1,76 @@
+
+<section class="tb-widget-settings" [formGroup]="threedSceneSettingsFormGroup">
+    <fieldset class="fields-group">
+        <legend class="group-title">Scene settings</legend>
+
+        <div class="tb-container"  style="color:white">
+            <div class="rendererContainer" #rendererContainer>
+                <div class="position-absolute w-100 ontop">
+                    <mat-progress-bar mode="determinate" value="loadingProgress" *ngIf="loadingProgress < 100"></mat-progress-bar>
+
+                    <div fxLayout="row">
+
+                        <div fxFlex fxLayoutAlign="end center" (click)="$event.stopPropagation()">
+                            <button mat-icon-button (click)="enterFullscreen()" *ngIf="!fullscreen">
+                                <mat-icon>fullscreen</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="exitFullscreen()" *ngIf="fullscreen">
+                                <mat-icon>fullscreen_exit</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="position-absolute w-100 ontop" style="bottom:0!important">
+                    <div fxLayout="row" *ngIf="fullscreen">
+                        <div fxFlex="66" fxLayoutAlign="center center" fxFlexOffset="17" (click)="$event.stopPropagation()">
+                            <button mat-icon-button (click)="changeControlMode('translate')">
+                                <mat-icon>open_with</mat-icon>
+                            </button>
+
+                            <button mat-icon-button (click)="changeControlMode('rotate')">
+                                <mat-icon>rotate_left</mat-icon>
+                            </button>
+
+                            <button mat-icon-button (click)="changeControlMode('scale')">
+                                <mat-icon>open_in_full</mat-icon>
+                            </button>
+
+                            <button mat-icon-button (click)="focusOnObject()">
+                                <mat-icon>center_focus_strong</mat-icon>
+                            </button>
+
+                            <!--
+                            <button mat-icon-button>
+                                <mat-icon>pan_tool</mat-icon>
+                            </button>
+                        -->
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <tb-threed-environment-settings 
+            [sceneEditor]="sceneEditor" 
+            [aliasController]="aliasController"
+            formControlName="threedEnvironmentSettings"
+            #threedEnvironmentSettings>
+        </tb-threed-environment-settings>
+
+        <tb-threed-camera-settings 
+            *ngIf="hasCamera()"
+            [sceneEditor]="sceneEditor" 
+            formControlName="threedCameraSettings"
+            #threedCameraSettings>
+        </tb-threed-camera-settings>
+
+        <tb-threed-devices-settings 
+            [sceneEditor]="sceneEditor" 
+            [aliasController]="aliasController"
+            formControlName="threedDevicesSettings"
+            #threedDevicesSettings>
+        </tb-threed-devices-settings>
+    </fieldset>
+</section>

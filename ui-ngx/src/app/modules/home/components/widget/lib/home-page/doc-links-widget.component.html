@@ -1,0 +1,34 @@
+
+<div class="tb-card-content" fxLayout="column" fxLayoutGap="8px">
+  <div class="tb-card-header">
+    <a class="tb-title-link" href="https://optifleet.com" target="_blank">{{ 'widgets.documentation.title' | translate }}</a>
+    <button class="tb-title-icon"
+            matTooltip="{{ 'action.edit' | translate }}"
+            matTooltipPosition="above"
+            mat-icon-button
+            (click)="edit()">
+      <tb-icon>edit</tb-icon>
+    </button>
+  </div>
+  <mat-grid-list class="tb-links-list" fxFlex [cols]="columns" [rowHeight]="rowHeight" [gutterSize]="gutterSize">
+    <mat-grid-tile class="tb-links-tile" *ngFor="let docLink of documentationLinks?.links">
+      <a fxFlex class="tb-link-button"
+         [href]="docLink.link" target="_blank">
+        <div class="tb-link-container">
+          <div class="tb-link-icon-container">
+            <tb-icon color="primary">{{ docLink.icon }}</tb-icon>
+          </div>
+          <div class="tb-link-text">{{ docLink.name }}</div>
+        </div>
+      </a>
+    </mat-grid-tile>
+    <mat-grid-tile class="tb-links-tile">
+      <div fxFlex class="tb-add-link-button"
+           matTooltip="{{ 'widgets.documentation.add-link' | translate }}"
+           matTooltipPosition="above"
+           (click)="addLink()">
+        <tb-icon class="tb-add-icon">add</tb-icon>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

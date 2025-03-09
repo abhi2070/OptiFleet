@@ -1,0 +1,73 @@
+<div>
+  <mat-card appearance="outlined" class="settings-card">
+    <mat-card-header>
+      <mat-card-title>
+        <span class="mat-headline-5" translate>white-labelling.mail-templates</span>
+      </mat-card-title>
+      <span fxFlex></span>
+      <div tb-help="securitySettings"></div>
+    </mat-card-header>
+    <!-- <div style="height: 4px;" *ngIf="!(isLoading$ | async)"></div> -->
+    <mat-card-content>
+      <form>
+
+        <div>
+          <mat-checkbox style="margin-bottom: 16px;" color="primary">
+            {{ 'white-labelling.use-system-mail-templates' | translate }}
+              </mat-checkbox>
+        </div>
+
+        <mat-form-field style="width: 100%;">
+          <mat-label translate>white-labelling.mail-template</mat-label>
+          <mat-select>
+            <mat-option value="one" translate>Test email message</mat-option>
+            <mat-option value="two">Top of the login form</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <form class="example-form" style="width: 100%;">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label translate> white-labelling.mail-subject </mat-label>
+            <input matInput placeholder="Test message from OptiFleet Cloud" value="">
+          </mat-form-field>
+        </form>
+
+        <mat-hint>Mail body</mat-hint>
+
+        <!-- <editor apiKey="your-api-key" init='{
+            "plugins": "print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help",
+            "toolbar": "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | download",
+            "setup": function (editor) {
+              editor.ui.registry.addButton("download", {
+                text: "Download",
+                onAction: function () {
+                  var content = editor.getContent({ format: "text" });
+                  var blob = new Blob([content], { type: "text/plain" });
+                  var url = window.URL.createObjectURL(blob);
+                  var a = document.createElement("a");
+                  a.href = url;
+                  a.download = "content.txt";
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                }
+              });
+            }
+          }'></editor> -->
+
+          <editor [init]="editorConfig"></editor>
+
+
+
+
+        <div fxLayout="row" fxLayoutAlign="end center" style="margin-top: 20px;">
+
+          <button mat-raised-button color="warn" [disabled]="isDisabledDelete" (click)="save()">
+            {{ 'action.save' | translate }}
+          </button>
+        </div>
+
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

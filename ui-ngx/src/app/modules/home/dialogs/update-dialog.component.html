@@ -1,0 +1,162 @@
+<mat-toolbar color="primary">
+  <h2 translate>Edit scheduler event</h2>
+  <span fxFlex></span>
+  <div [tb-help]=""></div>
+  <button mat-icon-button (click)="cancel()" type="button">
+    <mat-icon class="material-icons">close</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoading$ | async">
+</mat-progress-bar>
+<div mat-dialog-content>
+  <form [formGroup]="editSchedulerFormGroup" (ngSubmit)="update()" style="padding: 10px;">
+    <fieldset [disabled]="(isLoading$ | async)">
+      <mat-form-field class="mat-block" style="width: 100%;">
+        <mat-label translate>schedulers.name</mat-label>
+        <input matInput formControlName="name">
+        <mat-error *ngIf="editSchedulerFormGroup.get('name').hasError('required')">
+          {{ 'schedulers.name-required' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-tab-group dynamicHeight>
+        <mat-tab label="Configuration">
+          <fieldset class="fields-group">
+            <label style="font-weight: 500; color: black; width: 100%;" class="group-title" translate>General Report Settings</label>
+            <mat-form-field class="mat-block" style="width: 100%;">
+              <mat-label translate>Report Name Pattern</mat-label>
+              <input matInput formControlName="reportNamePattern" required>
+              <mat-error *ngIf="editSchedulerFormGroup.get('reportNamePattern').hasError('required')">
+                Report name pattern is required.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="mat-block" style="width: 100%;">
+              <mat-label style="font-weight: 500; color: black; width: 100%;">Report Type</mat-label>
+              <mat-select formControlName="reportType">
+                <mat-option *ngFor="let type of reportTypes" [value]="type">{{ type }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="editSchedulerFormGroup.get('reportType').hasError('required')">
+                Report type is required.
+              </mat-error>
+            </mat-form-field>
+          </fieldset>
+
+            <fieldset  class="fields-group">
+              <mat-label style="font-weight: 500; color: black; width: 100%;">Filtered Data Report</mat-label>
+              <mat-form-field  class="mat-block" style="width: 100%;">
+                <mat-label translate>report.category</mat-label>
+                <mat-select formControlName="reportCategory" (selectionChange)="onCategoryChange($event)">
+                  <mat-option *ngFor="let category of reportCategory" [value]="category.id">
+                    {{ category.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="editSchedulerFormGroup.controls['reportCategory'].hasError('required')">
+                  {{ "report.select-report-category" | translate }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="mat-block" style="width: 100%;" >
+                <mat-label translate>report.available</mat-label>
+                <mat-select formControlName="reportAvailable">
+                  <mat-option *ngFor="let option of availableOptions" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="editSchedulerFormGroup.controls['reportAvailable'].hasError('required')">
+                  {{ "report.select-report-available" | translate }}
+                </mat-error>
+              </mat-form-field>
+            </fieldset>
+
+          <fieldset class="fields-group">
+            <label class="group-title" translate>Email configuration</label>
+            <mat-form-field class="mat-block" style="width: 100%;">
+              <mat-label translate>To:</mat-label>
+              <input matInput type="text" formControlName="toAddress">
+              <mat-error *ngIf="editSchedulerFormGroup.get('toAddress').hasError('required')">
+                To is required
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="mat-block" style="width: 100%;">
+              <mat-label translate>Cc:</mat-label>
+              <input matInput type="text" formControlName="cc">
+            </mat-form-field>
+            <mat-form-field class="mat-block" style="width: 100%;">
+              <mat-label translate>Bcc:</mat-label>
+              <input matInput type="text" formControlName="bcc">
+            </mat-form-field>
+            <mat-form-field class="mat-block" floatLabel="always" style="width: 100%;">
+              <mat-label translate>Subject:</mat-label>
+              <input matInput formControlName="subject">
+              <mat-error *ngIf="editSchedulerFormGroup.get('subject').hasError('required')">
+                Subject is required
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="mat-block" floatLabel="always" style="width: 100%;">
+              <mat-label translate>Body:</mat-label>
+              <textarea matInput formControlName="body">
+              </textarea>
+            </mat-form-field>
+          </fieldset>
+          <fieldset class="fields-group">
+          <mat-slide-toggle formControlName="schedule" (change)="toggleSchedule($event.checked)">
+            Schedule
+          </mat-slide-toggle>
+          <div *ngIf="isScheduleEnabled">
+            <div style="width: 100%;">
+              <mat-form-field appearance="fill" style="width: 100%;">
+                <mat-label>TimeZone</mat-label>
+                <mat-select formControlName="timeZone">
+                  <mat-option *ngFor="let timeZone of timeZones" [value]="timeZone.value">
+                    {{ timeZone.viewValue }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <mat-form-field class="mat-block" style="margin-top: 8px; width: 100%;">
+              <mat-label>Start time</mat-label>
+              <mat-datetimepicker-toggle [for]="datetimePicker" matPrefix></mat-datetimepicker-toggle>
+              <input matInput formControlName="start" [matDatetimepicker]="datetimePicker" autocomplete="off"
+                (change)="onDateTimeChange($event)" [value]="formatDateTime(campaignOne.get('startdatetime').value)" />
+              <mat-datetimepicker #datetimePicker type="datetime"></mat-datetimepicker>
+              <mat-error *ngIf="editSchedulerFormGroup.get('start').hasError('required')">
+                Start Date is required
+              </mat-error>
+            </mat-form-field>
+            <div style="width: 100%; border: 1px solid #ccc; padding: 10px; border-radius: 4px; margin-top: 8px;">
+              <mat-slide-toggle formControlName="repeat" (change)="toggleRepeat($event.checked)">
+                Repeat
+              </mat-slide-toggle>
+              <div *ngIf="isRepeatEnabled">
+                <mat-form-field style="width: 100%; margin-top: 16px;">
+                  <mat-label>Repeats</mat-label>
+                  <mat-select formControlName="repeatSchedule" name="repeatSchedule">
+                    <mat-option *ngFor="let repeat of repeats" [value]="repeat.value">
+                      {{repeat.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="mat-block" style="margin-top: 8px; width: 100%;">
+                  <mat-label>Ends on</mat-label>
+                  <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+                  <input matInput [matDatepicker]="picker" formControlName="endDate">
+                  <mat-error *ngIf="editSchedulerFormGroup.get('endDate').hasError('required')">
+                    End Date is required
+                  </mat-error>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          </fieldset>
+        </mat-tab>
+      </mat-tab-group>
+    </fieldset>
+  </form>
+</div>
+<div mat-dialog-actions class="tb-dialog-actions">
+  <mat-divider style="width: 100%"></mat-divider>
+  <div class="dialog-actions-row">
+    <button mat-button [disabled]="(isLoading$ | async)" (click)="cancel()">{{ 'action.cancel' | translate }}</button>
+    <button mat-raised-button [disabled]="(isLoading$ | async) || !isFormDirty" color="primary" (click)="update()">{{ 'action.update' | translate }}</button>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<section class="tb-widget-settings" [formGroup]="threedSimulationWidgetSettingsForm">
+
+    <fieldset class="fields-group">
+        <legend class="group-title">Assets</legend>
+
+        <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let asset of threedSimulationWidgetSettingsForm.get('assets').value"
+                [value]="asset" (click)="visualiseAsset(asset)" style="text-align: center;">
+                <span><b>{{asset.type}}</b> - <i>{{asset.name}}</i></span>
+            </mat-list-option>
+        </mat-selection-list>
+
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <mat-slide-toggle formControlName="use3D" (click)="$event.stopPropagation()"
+                fxLayoutAlign="center">
+                3D Model
+            </mat-slide-toggle>
+
+            <tb-threed-model-input [fxShow]="threedSimulationWidgetSettingsForm.get('use3D').value" #modelInput label="3D model" formControlName="modelUrl">
+            </tb-threed-model-input>
+
+            <tb-image-input [fxShow]="!threedSimulationWidgetSettingsForm.get('use3D').value" #imageInput label="Image" formControlName="imageUrl">
+            </tb-image-input>
+
+            <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-around center" *ngIf="modelInput.name || imageInput.name">
+                <button mat-mini-fab (click)="addAsset()"><mat-icon>add</mat-icon></button>
+                <button mat-mini-fab (click)="deleteAsset()"><mat-icon>delete</mat-icon></button>
+            </div>
+        </div>
+    </fieldset>
+
+
+    <fieldset class="fields-group">
+        <legend class="group-title">Menu Editor</legend>
+        <tb-html formControlName="menuHtml">
+        </tb-html>
+        <tb-css formControlName="menuCss">
+        </tb-css>
+        <tb-js-func formControlName="menuJs" [globalVariables]="functionScopeVariables"
+            [functionArgs]="['context', 'simulationScene', 'Threed']">
+        </tb-js-func>
+    </fieldset>
+
+    <fieldset class="fields-group">
+        <legend class="group-title">Script Editor</legend>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <nav mat-tab-nav-bar>
+                <a mat-tab-link *ngFor="let script of threedSimulationWidgetSettingsForm.get('scripts').value"
+                    (click)="selectScript(script)" [active]="activeScript?.name == script.name">
+                    {{script.name}}
+                </a>
+            </nav>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px"
+            style="margin-top: 10px; margin-bottom: 10px;">
+            <button mat-mini-fab (click)="addScript()"><mat-icon>add</mat-icon></button>
+            <button mat-mini-fab *ngIf="activeScript?.deletable"
+                (click)="editScript()"><mat-icon>edit</mat-icon></button>
+            <button mat-mini-fab *ngIf="activeScript?.deletable"
+                (click)="deleteScript()"><mat-icon>delete</mat-icon></button>
+        </div>
+
+        <div [hidden]="!activeScript">
+            <tb-js-func [hidden]="activeScript.name == 'onDataUpdate.js'" #jsEditor formControlName="jsTextFunction"
+                [globalVariables]="functionScopeVariables" [functionArgs]="['context', 'simulationScene', 'Threed']">
+            </tb-js-func>
+            <tb-js-func [hidden]="activeScript.name != 'onDataUpdate.js'" #jsEditor2 formControlName="jsTextFunction2"
+                [globalVariables]="functionScopeVariables"
+                [functionArgs]="['context', 'simulationScene', 'Threed', 'datasources']">
+            </tb-js-func>
+        </div>
+    </fieldset>
+
+
+    <fieldset class="fields-group">
+        <legend class="group-title">Scene Preview</legend>
+
+        <tb-simulation-helper class="rendererContainer" #simulationHelper [aliasController]="aliasController"
+            [editor]=true></tb-simulation-helper>
+
+    </fieldset>
+</section>

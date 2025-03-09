@@ -1,0 +1,102 @@
+<div>
+    <mat-card appearance="outlined" class="settings-card">
+        <mat-card-header>
+        <mat-card-title>
+            <span class="mat-headline-5" translate>white-labelling.white-label</span>
+        </mat-card-title>
+        <span fxFlex></span>
+        <div tb-help="securitySettings"></div>
+        </mat-card-header>
+        <!-- <div style="height: 4px;" *ngIf="!(isLoading$ | async)"></div> -->
+        <mat-card-content>
+            <form>
+                <form class="example-form" style="width: 100%;">
+                    <mat-form-field class="example-full-width" style="width: 100%;">
+                      <mat-label translate > white-labelling.application-title </mat-label>
+                      <input matInput placeholder="" value="">
+                    </mat-form-field>
+                  </form>
+
+                  <tb-gallery-image-input fxFlex
+                          label="{{'white-labelling.website-icon' | translate}}"
+                          formControlName="image">
+                  </tb-gallery-image-input>
+
+                  <tb-gallery-image-input fxFlex
+                          label="{{'white-labelling.logo' | translate}}"
+                          formControlName="image">
+                  </tb-gallery-image-input>
+
+                  <form class="example-form" style="width: 100%;">
+                    <mat-form-field class="example-full-width" style="width: 100%;">
+                      <mat-label translate>white-labelling.logo height-px</mat-label>
+                      <input matInput placeholder="" value="">
+                    </mat-form-field>
+                  </form>
+
+
+
+                  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" style="padding: 8px;">
+                    <mat-form-field style="width: 90%;">
+                      <mat-label translate>white-labelling.primary-palette</mat-label>
+                      <mat-select>
+                        <mat-option value="one">First option</mat-option>
+                        <mat-option value="two">Second option</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-flat-button style="margin-left: 20px;">Customize</button>
+                  </div>
+
+
+                  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" style="padding: 8px;">
+                    <mat-form-field style="width: 90%;">
+                      <mat-label translate>white-labelling.accent-palette</mat-label>
+                      <mat-select>
+                        <mat-option value="one">First option</mat-option>
+                        <mat-option value="two">Second option</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-flat-button style="margin-left: 20px;">Customize</button>
+                  </div>
+
+                  <div>
+                    <section>
+                        <div class="example-label"></div>
+                        <div class="example-button-row">
+                          <button mat-flat-button>Advanced CSS</button>
+                        </div>
+                      </section>
+                  </div>
+
+
+                  <div>
+                    <mat-checkbox style="margin-bottom: 16px;" color="primary">
+                        {{ 'Hide connectivity dialog' | translate }}
+                   </mat-checkbox>
+                  </div>
+
+                  <div>
+                    <mat-checkbox style="margin-bottom: 16px;" color="primary">
+                        {{ 'Show platform name and version' | translate }}
+                   </mat-checkbox>
+                  </div>
+
+
+                  <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="16px">
+                    <button mat-raised-button color="warn" [disabled]="isDisabledPreview" (click)="preview()">
+                        {{ 'Preview' | translate }}
+                    </button>
+                    <button mat-raised-button color="warn" [disabled]="isDisabledDelete" (click)="save()">
+                      {{ 'action.save' | translate }}
+                    </button>
+                  </div>
+
+
+
+
+            </form>
+        </mat-card-content>
+        </mat-card>
+</div>
+
+

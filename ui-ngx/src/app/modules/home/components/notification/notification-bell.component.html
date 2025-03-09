@@ -1,0 +1,4 @@
+
+<button mat-icon-button #showNotificationButton (click)="showNotification($event, showNotificationButton)">
+  <mat-icon class="material-icons" [matBadge]="(count$ | async)" [matBadgeHidden]="!(count$ | async)" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+</button>

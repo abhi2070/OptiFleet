@@ -1,0 +1,47 @@
+<div>
+    <mat-card appearance="outlined" class="settings-card">
+        <mat-card-header>
+        <mat-card-title>
+            <span class="mat-headline-5" translate>white-labelling.custom-translation</span>
+        </mat-card-title>
+        <span fxFlex></span>
+        <div tb-help="securitySettings"></div>
+        </mat-card-header>
+        <mat-card-content>
+            <form>
+
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" style="padding: 8px;">
+                    <mat-form-field style="width: 75%;">
+                        <mat-label translate>white-labelling.language</mat-label>
+                        <mat-select>
+                        <mat-option value="one" translate>Catalan</mat-option>
+                        <mat-option value="two">Cesky</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-flat-button style="margin-left: 20px;">{{ 'white-labelling.download-locale-file' | translate }}</button>
+                </div>
+
+                <mat-hint>Define custom translation JSON below. This JSON will overwrite default translation. Click 'Download locale file' to get existing translation. You may also use the downloaded file as a reference to available translation key-value pairs.</mat-hint>
+
+                <tb-protobuf-content
+                      fxFlex
+                      label="{{ 'white-labelling.translation-map' | translate }}"
+                      [fillHeight]="true">
+                </tb-protobuf-content>
+
+
+                <div fxLayout="row" fxLayoutAlign="end center" style="margin-top: 20px;">
+
+                    <button mat-raised-button color="warn" [disabled]="isDisabledDelete" (click)="save()">
+                      {{ 'action.save' | translate }}
+                    </button>
+                  </div>
+
+
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+

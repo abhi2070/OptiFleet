@@ -1,0 +1,68 @@
+
+<div class="head_card">
+  <div class="login_card">
+    <div class="card_logo">
+      <div class="login-logo">
+        <tb-logo></tb-logo>
+        <div class="logo_details">
+          <div class="detail_content" style="color: white;">
+            <h2 style="text-align: center; font-size: 25px;">Your Trusted Partner in Fleet Optimization
+            </h2>
+            <p style="text-align: center; font-size: 18px;">Would you like to emphasize specific aspects like real-time tracking, cost efficiency, or sustainability?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card_content">
+      <form class="tb-login-form" [formGroup]="loginFormGroup" (ngSubmit)="login()">
+        <fieldset fxLayout="row" style="width: 100%;">
+          <!-- <span style="height: 4px;" *ngIf="!(isLoading$ | async)"></span> -->
+          <div tb-toast fxLayout="column" class="layout-padding" style="width: 100%">
+            <span></span>
+            <div class="oauth-container tb-default" fxLayout="column" fxLayoutGap="16px" *ngIf="oauth2Clients?.length">
+              <ng-container *ngFor="let oauth2Client of oauth2Clients">
+                <a mat-raised-button class="login-with-button" href="{{ getOAuth2Uri(oauth2Client) }}">
+                  <mat-icon class="icon" svgIcon="{{ oauth2Client.icon }}"></mat-icon>
+                  {{ 'login.login-with' | translate: {name: oauth2Client.name} }}
+                </a>
+              </ng-container>
+              <div class="container-divider">
+                <div class="line"><mat-divider></mat-divider></div>
+                <div class="text mat-typography">{{ "login.or" | translate | uppercase }}</div>
+                <div class="line"><mat-divider></mat-divider></div>
+              </div>
+            </div>
+            <div style="color: black; width: 100%; display: flex; justify-content: center;">
+              <h3>Login</h3>
+            </div>
+            <mat-form-field class="tb-appearance-transparent" style="width: 50%; min-width: 220px;">
+              <mat-label translate>login.username</mat-label>
+              <input id="username-input" matInput type="email" autocomplete="off" formControlName="username" email
+                required />
+              <mat-icon style="color: black;" matPrefix>email</mat-icon>
+              <mat-error *ngIf="loginFormGroup.get('username').invalid">
+                {{ 'user.invalid-email-format' | translate }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="tb-appearance-transparent" style="width: 50%; min-width: 220px;">
+              <mat-label translate>common.password</mat-label>
+              <input id="password-input" matInput type="password" formControlName="password" />
+              <tb-toggle-password matSuffix></tb-toggle-password>
+              <mat-icon style="color: black;" matPrefix>lock</mat-icon>
+            </mat-form-field>
+            <div fxLayoutAlign="end center" class="forgot-password">
+              <button class="tb-reset-password" mat-button type="button" routerLink="/login/resetPasswordRequest">
+                {{ (passwordViolation ? 'login.reset-password' : 'login.forgot-password') | translate }}
+              </button>
+            </div>
+            <div fxLayout="row" class="tb-action-button" style="width: 25%;">
+              <button mat-raised-button color="accent" [disabled]="(isLoading$ | async)" type="submit"
+                style="width: 16vh;">{{
+                'login.login' | translate }}</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>

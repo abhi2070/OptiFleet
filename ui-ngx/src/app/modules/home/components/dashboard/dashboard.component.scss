@@ -1,0 +1,47 @@
+
+@import '../../../../../scss/constants';
+
+:host {
+
+  .tb-progress-cover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 6;
+    opacity: 1;
+  }
+
+  .tb-dashboard-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: none;
+    outline: none;
+    overflow-y: auto;
+
+    gridster-item {
+      transition: none;
+      overflow: visible;
+      background: none;
+    }
+
+    &.autofill-height {
+      overflow-y: hidden;
+      gridster.mobile {
+        overflow-y: hidden;
+      }
+    }
+  }
+
+  #gridster-child {
+    background: rgb(255, 255, 255);
+  }
+}
+
+.tb-dashboard-context-menu-items {
+  min-width: 256px;
+}

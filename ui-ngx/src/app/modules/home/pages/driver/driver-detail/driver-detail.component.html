@@ -1,0 +1,154 @@
+<div class="mat-padding" fxLayout="column">
+  <form [formGroup]="entityForm" *ngIf="entityForm">
+    <fieldset class="fields-group" [disabled]="!isEdit">
+      <div class="profile-photo-section" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+        <div class="profile-photo-container">
+          <ng-container *ngIf="profilePhoto; else defaultProfileIcon">
+            <img [src]="profilePhoto"
+                 alt="Profile Photo"
+                 class="profile-photo mat-elevation-z3">
+          </ng-container>
+          <ng-template #defaultProfileIcon>
+            <div class="default-profile-icon mat-elevation-z3">
+              <mat-icon class="profile-placeholder">account_circle</mat-icon>
+            </div>
+          </ng-template>
+
+          <div class="upload-overlay" [class.visible]="!profilePhoto && isEdit">
+            <button mat-mini-fab
+                    color="primary"
+                    (click)="profilePhotoInput.click()"
+                    matTooltip="Upload Profile Photo"
+                    [disabled]="!isEdit">
+              <mat-icon>camera_alt</mat-icon>
+            </button>
+          </div>
+
+
+          <input #profilePhotoInput
+                 type="file"
+                 (change)="onProfilePhotoSelected($event)"
+                 accept="image/jpeg,image/jpg"
+                 [disabled]="!isEdit"
+                 hidden>
+        </div>
+
+        <div class="upload-info" *ngIf="(!profilePhoto || photoError) && isEdit">
+          <mat-hint class="hint-text">Click the camera icon to upload a photo (JPEG/JPG, max 50KB)</mat-hint>
+          <mat-error *ngIf="photoError" class="error-text">
+            {{ photoError }}
+          </mat-error>
+        </div>
+
+        <div class="photo-actions" *ngIf="profilePhotoFile && isEdit">
+          <button mat-raised-button
+                  color="primary"
+                  [disabled]="isSavingPhoto"
+                  (click)="saveProfilePhoto()">
+            <mat-icon>{{ isSavingPhoto ? 'hourglass_empty' : 'save' }}</mat-icon>
+            {{ isSavingPhoto ? 'Saving...' : 'Save Photo' }}
+          </button>
+          <button mat-raised-button
+                  color="warn"
+                  [disabled]="isSavingPhoto"
+                  (click)="cancelPhotoChanges()">
+            <mat-icon>undo</mat-icon>
+            Cancel
+          </button>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+        <mat-form-field fxFlex="50">
+          <mat-label translate>driver.name</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="entityForm.get('name').hasError('required') && entityForm.get('name').touched">
+            {{'driver.name-required' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label translate>driver.gender</mat-label>
+          <mat-select formControlName="gender" required>
+            <mat-option *ngFor="let gender of genderOptions" [value]="gender">
+              {{gender}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="entityForm.get('gender').hasError('required') && entityForm.get('gender').touched">
+            {{'driver.gender-required' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+        <mat-form-field fxFlex="50">
+          <mat-label translate>driver.dateOfBirth</mat-label>
+          <input matInput formControlName="dateOfBirth" [matDatepicker]="dobPicker" required>
+          <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+          <mat-datepicker #dobPicker></mat-datepicker>
+          <mat-error *ngIf="entityForm.get('dateOfBirth').hasError('required') && entityForm.get('dateOfBirth').touched">
+            {{'driver.dob-required' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label translate>driver.serviceStartDate</mat-label>
+          <input matInput formControlName="serviceStartDate" [matDatepicker]="serviceStartPicker" required>
+          <mat-datepicker-toggle matSuffix [for]="serviceStartPicker"></mat-datepicker-toggle>
+          <mat-datepicker #serviceStartPicker></mat-datepicker>
+          <mat-error *ngIf="entityForm.get('serviceStartDate').hasError('required') && entityForm.get('serviceStartDate').touched">
+            {{'driver.start-date-required' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- License Information -->
+      <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+        <mat-form-field fxFlex="50">
+          <mat-label translate>driver.drivingLicenseNumber</mat-label>
+          <input matInput formControlName="drivingLicenseNumber" required>
+          <mat-error *ngIf="entityForm.get('drivingLicenseNumber').hasError('required') && entityForm.get('drivingLicenseNumber').touched">
+            {{'driver.license-number-required' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label translate>driver.drivingLicenseValidity</mat-label>
+          <input matInput formControlName="drivingLicenseValidity" [matDatepicker]="licenseValidityPicker" required>
+          <mat-datepicker-toggle matSuffix [for]="licenseValidityPicker"></mat-datepicker-toggle>
+          <mat-datepicker #licenseValidityPicker></mat-datepicker>
+          <mat-error *ngIf="entityForm.get('drivingLicenseValidity').hasError('required') && entityForm.get('drivingLicenseValidity').touched">
+            {{'driver.license-validity-required' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+        <mat-form-field fxFlex="50">
+          <mat-label translate>driver.status</mat-label>
+          <mat-select formControlName="status" required>
+            <mat-option *ngFor="let status of driverStatuses" [value]="status.value">
+              {{status.label}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="entityForm.get('status').hasError('required') && entityForm.get('status').touched">
+            {{'driver.status-required' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="delete-button-container" *ngIf="!isEdit">
+    <button mat-raised-button
+            color="warn"
+            class="delete-button"
+            [disabled]="(isLoading$ | async)"
+            (click)="onEntityAction($event, 'delete')"
+            [fxShow]="!hideDelete() && !isEdit">
+      <mat-icon>delete</mat-icon>
+      {{'driver.delete' | translate }}
+    </button>
+  </div>
+</div>

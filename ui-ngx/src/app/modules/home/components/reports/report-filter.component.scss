@@ -1,0 +1,27 @@
+@import '../../../../../scss/constants';
+
+.device-filter-panel {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 16px;
+    }
+  
+    mat-form-field {
+      width: 100%;
+    }
+  
+    .custom-dialog-container {
+      .mat-dialog-container {
+        padding: 0;
+        overflow: visible;
+      }
+    }
+  }
+  
+

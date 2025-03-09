@@ -1,0 +1,129 @@
+<div class="table-container">
+  <!-- Table Header with Actions -->
+  <div class="table-header">
+    <span class="title">Trip History</span>
+    <div class="actions">
+      <button mat-icon-button (click)="refreshTable()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Wrapper -->
+  <div class="table-wrapper">
+    <!-- Table -->
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Select Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Trip Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Trip Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <!-- Start Date Column -->
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.startDate | date }}</td>
+      </ng-container>
+
+      <!-- End Date Column -->
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.endDate | date }}</td>
+      </ng-container>
+
+      <!-- Duration Column -->
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Duration</th>
+        <td mat-cell *matCellDef="let element">{{ element.duration }} mins</td>
+      </ng-container>
+
+      <!-- Vehicle Number Column -->
+      <ng-container matColumnDef="vehicleNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Vehicle Number</th>
+        <td mat-cell *matCellDef="let element">{{ element.vehicleNumber }}</td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+        <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+      </ng-container>
+
+      <!-- Header and Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- No Data Message - Centered in Wrapper -->
+    <div class="no-data-message" *ngIf="dataSource.data.length === 0">
+      No records found
+    </div>
+
+    <!-- Simple Pagination -->
+    <!-- <div class="pagination-footer">
+      <div class="items-per-page">
+        Items per page:
+        <mat-select [value]="pageSize" (selectionChange)="onPageSizeChange($event)">
+          <mat-option [value]="10">10</mat-option>
+        </mat-select>
+      </div>
+      <div class="page-range">{{startIndex}} - {{endIndex}} of {{totalItems}}</div>
+      <div class="page-controls">
+        <button mat-icon-button [disabled]="pageIndex === 0" (click)="firstPage()">
+          <mat-icon>first_page</mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="pageIndex === 0" (click)="previousPage()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="pageIndex === totalPages - 1" (click)="nextPage()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="pageIndex === totalPages - 1" (click)="lastPage()">
+          <mat-icon>last_page</mat-icon>
+        </button>
+      </div>
+    </div> -->
+    <div class="pagination-footer">
+      <div class="pagination-content">
+        <span class="items-label">Items per page:</span>
+        <mat-select [value]="10" class="page-select">
+          <mat-option [value]="10">10</mat-option>
+        </mat-select>
+        <span class="page-info">1 - 0 of 0</span>
+        <div class="page-controls">
+          <button mat-icon-button class="page-nav-button">
+            <mat-icon class="nav-icon">first_page</mat-icon>
+          </button>
+          <button mat-icon-button class="page-nav-button">
+            <mat-icon class="nav-icon">chevron_left</mat-icon>
+          </button>
+          <button mat-icon-button class="page-nav-button">
+            <mat-icon class="nav-icon">chevron_right</mat-icon>
+          </button>
+          <button mat-icon-button class="page-nav-button">
+            <mat-icon class="nav-icon">last_page</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

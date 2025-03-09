@@ -1,0 +1,270 @@
+.calendar-container {
+  width: 100%;
+  min-width: 300px; 
+  min-height: 400px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.calendar-day.today, .calendar-week-day.today, .calendar-single-day.today {
+  background-color: lightyellow;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.month-year {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.view-selector {
+  flex-grow: 1; 
+  margin-left: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.today-button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+.navigation {
+  display: flex;
+}
+
+.navigation button {
+  margin: 0 5px;
+}
+
+.navigation .custom-nav-button {
+  background-color: white !important;
+  color: black;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.week-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.week-day {
+  width: calc(100% / 7);
+  text-align: center;
+  font-weight: bold;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.calendar-day {
+  width: calc(100% / 7);
+  text-align: center;
+  padding: 10px 0;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  position: relative;
+}
+
+.calendar-day:last-child {
+  border-right: none;
+}
+
+
+.calendar-day.placeholder {
+  visibility: hidden;
+}
+
+.calendar-date {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.calendar-events {
+  width: 100%;
+} 
+
+.event {
+  margin-top: 5px;
+  padding: 2px 5px;
+  color: white;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: left;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.calendar-container {
+  width: 100%;
+  min-width: 300px; 
+  min-height: 400px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.calendar-day.today, .calendar-week-day.today, .calendar-single-day.today {
+  background-color: lightyellow;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.month-year {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.view-selector {
+  flex-grow: 1; 
+  margin-left: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.today-button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+.navigation {
+  display: flex;
+}
+
+.navigation button {
+  margin: 0 5px;
+}
+
+.navigation .custom-nav-button {
+  background-color: white !important;
+  color: black;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.week-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.week-day {
+  width: calc(100% / 7);
+  text-align: center;
+  font-weight: bold;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.calendar-day {
+  width: calc(100% / 7);
+  text-align: center;
+  padding: 10px 0;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  position: relative;
+}
+
+.calendar-day:last-child {
+  border-right: none;
+}
+
+
+.calendar-day.placeholder {
+  visibility: hidden;
+}
+
+.calendar-date {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.calendar-events {
+  width: 100%;
+} 
+
+.event {
+  margin-top: 5px;
+  padding: 2px 5px;
+  color: white;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: left;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar-events {
+  margin-top: 5px;
+}
+
+.no-events {
+  text-align: center;
+  padding: 20px;
+}
+
+.calendar-single-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  min-height: 300px; 
+  border: 1px solid #e0e0e0;
+}
+
+.calendar-single-day .calendar-date {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.calendar-single-day .calendar-events {
+  width: 100%;
+  text-align: center;
+}

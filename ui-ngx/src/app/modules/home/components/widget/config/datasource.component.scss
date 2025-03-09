@@ -1,0 +1,19 @@
+
+.tb-datasource-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1;
+}
+
+:host ::ng-deep {
+  .tb-datasource-section {
+    tb-alarm-filter-config {
+      .mdc-button {
+        width: 100%;
+        height: 100%;
+        justify-content: flex-start;
+      }
+    }
+  }
+}

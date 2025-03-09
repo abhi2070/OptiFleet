@@ -1,0 +1,90 @@
+<span class="scheduler" #scheduler>
+    <form [formGroup]="entityForm">
+        <div class="header">
+            <h4>Create scheduler event</h4>
+            <div class="header-buttons">
+                <button mat-mini-fab aria-label="Help" class="help-button">
+                    <mat-icon>help_outline</mat-icon>
+                </button>
+                <button matSuffix mat-icon-button aria-label="Clear" class="close-button" (click)="closeScheduler()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+        <fieldset class="field">
+            <mat-form-field class="mat-block">
+                <mat-label translate>schedulers.name</mat-label>
+                <input matInput formControlName="name" required>
+                <mat-error *ngIf="entityForm.get('name').hasError('required')">
+                    {{ 'schedulers.name-required' | translate }}
+                </mat-error>
+                <mat-error *ngIf="entityForm.get('name').hasError('maxlength')">
+                    {{ 'schedulers.name-max-length' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-tab-group dynamicHeight>
+                <!--Configuration  -->
+                <mat-tab label="Configuration">
+                    <div class="configuration">
+                        <mat-form-field class="mat-block">
+                            <mat-label translate>schedulers.event-type</mat-label>
+                            <input matInput formControlName="event-type" required>
+                            <mat-error *ngIf="entityForm.get('event-type').hasError('required')">
+                                {{ 'schedulers.event-type-required' | translate }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </mat-tab>
+
+
+                <!-- Schedule -->
+                <mat-tab label="Schedule">
+                    <form class="timezone" [formGroup]="entityForm">
+                        <mat-form-field appearance="fill">
+                            <mat-label>TimeZone</mat-label>
+                            <mat-select formControlName="timeZone">
+                                <mat-option *ngFor="let timeZone of timeZones" [value]="timeZone.value">
+                                    {{ timeZone.viewValue }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                    <form [formGroup]="campaignOne">
+                        <mat-form-field class="mat-block" style="margin-top: 8px;">
+                            <mat-label>Start time</mat-label>
+                            <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+                            <input matInput type="datetime-local" (change)="onDateTimeChange($event)" [value]="formatDateTime(campaignOne.get('startdatetime').value)" required>
+                        </mat-form-field>
+                    </form>
+
+                    <div class="example-full-width" style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; margin-top: 8px;">
+                        <mat-slide-toggle class="toggle" formControlName="enableIntegration">Repeat</mat-slide-toggle>
+                        <form>
+                            <mat-form-field class="full-width" style="margin-top: 16px;">
+                                <mat-label>Repeats</mat-label>
+                                <mat-select [(ngModel)]="selectedValue" name="repeat">
+                                    <mat-option *ngFor="let repeat of repeats" [value]="repeat.value">
+                                        {{repeat.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                        <mat-form-field class="mat-block" style="margin-top: 8px;">
+                            <mat-label>Ends on</mat-label>
+                            <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+                            <input matInput [matDatepicker]="picker" formControlName="date" required>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </fieldset>
+        <div class="footer-buttons">
+            <button mat-button class="cancel-button" type="button" (click)="closeScheduler()">Cancel</button>
+            <button mat-button class="add-button" type="submit">Add</button>
+        </div>
+    </form>
+</span>
+

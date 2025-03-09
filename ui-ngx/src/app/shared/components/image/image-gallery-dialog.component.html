@@ -1,0 +1,16 @@
+
+<div class="tb-image-gallery-dialog">
+  <button class="tb-image-gallery-close tb-mat-20"
+          mat-icon-button
+          (click)="cancel()"
+          type="button">
+    <mat-icon>close</mat-icon>
+  </button>
+  <tb-image-gallery
+    pageMode="false"
+    dialogMode
+    mode="grid"
+    selectionMode
+    (imageSelected)="imageSelected($event)">
+  </tb-image-gallery>
+</div>

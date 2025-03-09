@@ -1,0 +1,67 @@
+<mat-drawer-container hasBackdrop="false" class="tb-absolute-fill">
+    <div class="mat-padding tb-entity-table tb-absolute-fill">
+        <div fxLayout="column" class="tb-entity-table-content tb-outlined-border">
+            <mat-card-header class="mat-padding">
+                <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-between baseline" style="padding: 0 7px;">
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between baseline">
+                        <mat-card-title fxLayout="row wrap" fxFlex style="margin-right: 10px;">
+                            <span class="mat-headline-5" translate>report.equipment-utilization-report</span>
+                        </mat-card-title>
+                        <form>
+                            <tb-report-filter [reportType]="reportName" (filterChange)="showReport()"></tb-report-filter>
+                        </form>
+                    </div>
+                    <div fxLayout="row wrap">
+                        <button mat-icon-button [disabled]="isLoading$ | async" (click)="refreshData()"
+                            matTooltip="{{ 'action.refresh' | translate }}" matTooltipPosition="above">
+                            <mat-icon>refresh</mat-icon>
+                        </button>
+                        <button mat-icon-button [matMenuTriggerFor]="menu"
+                            matTooltip="{{ 'action.download' | translate }}" matTooltipPosition="above">
+                            <mat-icon>file_download</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="exportToCSV()"
+                                matTooltip="{{ 'report.csv-format' | translate }}">
+                                <mat-icon>insert_drive_file_rounded</mat-icon>
+                                <span translate>report.csv-format</span>
+                            </button>
+                            <button mat-menu-item (click)="exportToExcel()"
+                                matTooltip="{{ 'report.excel-format' | translate }}">
+                                <mat-icon>description_outlined</mat-icon>
+                                <span translate>report.excel-format</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </mat-card-header>
+            <div fxFlex class="table-container">
+                <table *ngIf="dataSource && dataSource.data.length > 0" mat-table [dataSource]="dataSource"
+                    style="overflow:auto;">
+                    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                        <th mat-header-cell *matHeaderCellDef class="text-center" style="white-space: nowrap;">
+                            {{ column }}
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-center" style="white-space: nowrap;">
+                            {{ element[column] }}
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <div class="mat-padding mat-headline-6" fxFlex *ngIf="dataSource.data.length === 0 && latestTimeseries">
+                    <span fxLayoutAlign="center center" class="no-data-found" translate>
+                        report.no-data-found
+                    </span>
+                </div>
+                <div class="mat-padding mat-headline-6" fxFlex *ngIf="!latestTimeseries">
+                    <span fxFlex fxLayoutAlign="center center" class="no-data-found" translate>
+                        report.no-report
+                    </span>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</mat-drawer-container>

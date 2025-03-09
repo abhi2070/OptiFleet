@@ -1,0 +1,247 @@
+// .table-container {
+//   width: 100%;
+//   background: white;
+//   min-height: calc(100vh - 64px); /* This will make it fill the available space */
+//   border: 1px solid rgba(0, 0, 0, 0.12); /* Adding thin border around container */
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .table-header {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 16px;
+//   background: white;
+// }
+
+// .title {
+//   font-size: 20px;
+//   font-weight: 500;
+// }
+
+// .table-wrapper {
+//   flex: 1; /* This makes the table section fill available space */
+//   overflow: auto; /* Enables scrolling if content overflows */
+// }
+
+// /* Table Styling */
+// .mat-table {
+//   width: 100%;
+//   background: white;
+// }
+
+// th.mat-header-cell {
+//   color: rgba(0, 0, 0, 0.87);
+//   font-weight: 500;
+//   background: white;
+//   padding: 16px;
+// }
+
+// td.mat-cell {
+//   padding: 16px;
+// }
+
+// .no-data-row td {
+//   text-align: left;
+//   padding: 16px;
+// }
+
+// /* Pagination Footer */
+// .pagination-footer {
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: center;
+//   padding: 8px 16px;
+//   background: white;
+//   border-top: 1px solid rgba(0, 0, 0, 0.12);
+//   gap: 24px;
+// }
+
+// .items-per-page {
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+// }
+
+// .mat-select {
+//   width: 64px;
+// }
+
+// .page-controls {
+//   display: flex;
+//   align-items: center;
+// }
+
+// /* Status styling */
+// .completed {
+//   color: green;
+// }
+
+// .ongoing {
+//   color: orange;
+// }
+
+
+.table-container {
+  width: 100%;
+  background: white;
+  height: calc(100vh - 64px);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;  /* Adjusted padding */
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Table Wrapper to allow scrolling */
+.table-wrapper {
+  flex: 1;
+  min-height: 400px;  /* Added minimum height */
+  display: flex;      /* Added flex display */
+  flex-direction: column; /* Added flex direction */
+}
+
+.no-data-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #757575;
+  text-align: center;
+}
+
+/* Table Styling */
+.mat-table {
+  width: 100%;
+  background: white;
+  flex: 1;           /* Make table fill available space */
+}
+
+th.mat-header-cell {
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: 500;
+  background: white;
+  padding: 12px 24px;  /* Adjusted padding */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+td.mat-cell {
+  padding: 12px 24px;  /* Adjusted padding */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+tr.mat-row:last-child td {
+  border-bottom: none;
+}
+.no-data-row {
+  height: 200px; /* Adjust height to center text vertically */
+}
+
+.no-data-cell {
+  text-align: center; /* Centers text horizontally */
+  font-size: 16px;
+  font-weight: bold;
+  color: #757575;
+  padding: 20px;
+}
+.no-data-row td {
+  text-align: left;
+  padding: 16px 24px;
+  height: 300px;  /* Added height for empty state */
+}
+
+/* Pagination Footer */
+.pagination-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px 24px;  /* Adjusted padding */
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  gap: 24px;
+  margin-top: auto;  /* Push footer to bottom */
+}
+
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mat-select {
+  width: 64px;
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+}
+
+.pagination-footer {
+  padding: 8px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  background: white;
+}
+
+.pagination-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.items-label {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 14px;
+}
+
+.page-select {
+  width: 48px;
+  margin: 0 20px 0 8px;
+}
+
+.page-info {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-nav-button {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.nav-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+::ng-deep .mat-select-value {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 14px;
+}

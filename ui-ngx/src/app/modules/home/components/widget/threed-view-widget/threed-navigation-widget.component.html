@@ -1,0 +1,22 @@
+<div #rendererContainer>
+
+    <div id="blocker" [ngStyle]="{'display': pointerLocked ? 'none' : 'block'}">
+        <div id="instructions" [ngStyle]="{'display': pointerLocked ? 'none' : ''}" (click)="lockCursor($event)">
+            <p style="font-size:36px">
+                Click to move
+            </p>
+            <p>
+                Move: WASD<br>
+                Jump: SPACE<br>
+                Crouch: LEFTSHIFT<br>
+                Look: MOUSE<br>
+                Unlock: ESC
+            </p>
+        </div>
+    </div>
+    <div class="crosshair" [ngStyle]="{'display': pointerLocked ? '' : 'none'}">
+        <div class="horizontal"></div>
+        <div class="vertical"></div>
+    </div>
+
+</div>

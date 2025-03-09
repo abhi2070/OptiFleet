@@ -1,0 +1,46 @@
+@import '../../../../../scss/constants';
+
+:host {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    mat-drawer-container {
+        overflow: clip;
+    }
+
+    .tb-entity-table {
+        .tb-entity-table-content {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            overflow: hidden;
+
+            &.tb-outlined-border {
+                box-shadow: 0 0 0 0 rgb(0 0 0 / 20%), 0 0 0 0 rgb(0 0 0 / 14%), 0 0 0 0 rgb(0 0 0 / 12%);
+                border: solid 1px #e0e0e0;
+                border-radius: 4px;
+            }
+
+            .fields-group {
+                padding: 0 16px 8px;
+                margin: 10px 0;
+                border: 1px groove rgba(0, 0, 0, .25);
+                border-radius: 4px;
+
+                legend {
+                    color: rgba(0, 0, 0, .7);
+                }
+            }
+
+            .table-container {
+                overflow: auto;
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+    }
+
+}

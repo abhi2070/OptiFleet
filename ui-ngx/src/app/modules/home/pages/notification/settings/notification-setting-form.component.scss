@@ -1,0 +1,10 @@
+
+:host {
+  .notification-type {
+    font-size: 14px;
+
+    &-disabled {
+      color: rgba(0, 0, 0, 0.38)
+    }
+  }
+}

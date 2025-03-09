@@ -1,0 +1,155 @@
+<form [formGroup]="entityForm">
+  <fieldset>
+    <mat-form-field class="mat-block">
+      <mat-label translate>schedulers.name</mat-label>
+      <input matInput formControlName="name">
+      <mat-error *ngIf="entityForm.get('name').hasError('required')">
+        {{ 'schedulers.name-required' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-tab-group dynamicHeight>
+      <mat-tab label="Configuration">
+        <div class="example-full-width"
+          style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; margin-top: 8px;">
+          <mat-label style="font-weight: 500; color: black;">General Report Settings</mat-label>
+          <mat-form-field class="mat-block">
+            <mat-label>Report Name Pattern</mat-label>
+            <input matInput formControlName="reportNamePattern" required>
+            <mat-error *ngIf="entityForm.get('reportNamePattern').hasError('required')">
+              Report name pattern is required.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mat-block">
+            <mat-label>Report Type</mat-label>
+            <mat-select formControlName="reportType">
+              <mat-option *ngFor="let type of reportTypes" [value]="type">{{ type }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="entityForm.get('reportType').hasError('required')">
+              Report type is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="example-full-width" style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; margin-top: 8px;">
+          <mat-label style="font-weight: 500; color: black;">Filter Data Report</mat-label>
+          <mat-form-field class="full-width mb-4">
+              <mat-label translate>report.category</mat-label>
+              <mat-select formControlName="reportCategory" (selectionChange)="onCategoryChange($event)">
+                  <mat-option *ngFor="let category of reportCategory" [value]="category.id">
+                      {{ category.name }}
+                  </mat-option>
+              </mat-select>
+              <mat-error *ngIf="entityForm.controls['reportCategory'].hasError('required')">
+                  {{ "report.select-report-category" | translate }}
+              </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+              <mat-label translate>report.available</mat-label>
+              <mat-select formControlName="reportAvailable">
+                  <mat-option *ngFor="let option of availableOptions" [value]="option.value">
+                      {{ option.label }}
+                  </mat-option>
+              </mat-select>
+              <mat-error *ngIf="entityForm.controls['reportAvailable'].hasError('required')">
+                  {{ "report.select-report-available" | translate }}
+              </mat-error>
+          </mat-form-field>
+      </div>
+        <div class="example-full-width"
+          style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; margin-top: 8px;">
+          <mat-label style="font-weight: 500; color: black;">Email configuration</mat-label>
+          <div class="form-group full-width">
+            <div>
+              <mat-form-field class="full-width">
+                <mat-label for="toAddress">To:</mat-label>
+                <input matInput type="text" id="to" formControlName="toAddress">
+                <mat-error *ngIf="entityForm.get('toAddress').hasError('required')">
+                  To is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="full-width">
+                <mat-label for="cc">Cc:</mat-label>
+                <input matInput type="text" id="cc" formControlName="cc">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="full-width">
+                <mat-label for="bcc">Bcc:</mat-label>
+                <input matInput type="text" id="bcc" formControlName="bcc">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="full-width">
+                <mat-label for="subject">Subject:</mat-label>
+                <input matInput type="text" id="subject" formControlName="subject" required>
+                <mat-error *ngIf="entityForm.get('subject').hasError('required')">
+                  Subject is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="example-full-width">
+                <mat-label for="body">Body:</mat-label>
+                <textarea matInput placeholder="" id="body" type="text" formControlName="body"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div  class="example-full-width" style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; margin-top: 8px;">
+        <mat-slide-toggle class="toggle" formControlName="schedule"
+          (change)="toggleSchedule($event.checked)">Schedule</mat-slide-toggle>
+        <div *ngIf="isScheduleEnabled">
+          <div>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>TimeZone</mat-label>
+              <mat-select formControlName="timeZone">
+                <mat-option *ngFor="let timeZone of timeZones" [value]="timeZone.value">
+                  {{ timeZone.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <mat-form-field class="mat-block" style="margin-top: 8px;">
+            <mat-label>Start time</mat-label>
+            <mat-datetimepicker-toggle [for]="datetimePicker" matPrefix></mat-datetimepicker-toggle>
+            <input matInput formControlName="start" [matDatetimepicker]="datetimePicker" autocomplete="off"
+              (change)="onDateTimeChange($event)" [value]="formatDateTime(campaignOne.get('startdatetime').value)" />
+            <mat-datetimepicker #datetimePicker type="datetime"></mat-datetimepicker>
+            <mat-error *ngIf="entityForm.get('start').hasError('required')">
+              Start Date is required
+            </mat-error>
+          </mat-form-field>
+          <div class="example-full-width"
+            style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; margin-top: 8px;">
+            <mat-slide-toggle class="toggle" (change)="toggleRepeat($event.checked)"
+              formControlName="repeat">Repeat</mat-slide-toggle>
+            <div *ngIf="isRepeatEnabled">
+              <mat-form-field class="full-width" style="margin-top: 16px;">
+                <mat-label>Repeats</mat-label>
+                <mat-select formControlName="repeatSchedule" name="repeatSchedule">
+                  <mat-option *ngFor="let repeat of repeats" [value]="repeat.value">
+                    {{repeat.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="mat-block" style="margin-top: 8px;">
+                <mat-label>Ends on</mat-label>
+                <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+                <input matInput [matDatepicker]="picker" formControlName="endDate">
+                <mat-error *ngIf="entityForm.get('endDate').hasError('required')">
+                  End Date is required
+                </mat-error>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      </mat-tab>
+    </mat-tab-group>
+  </fieldset>
+</form>

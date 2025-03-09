@@ -1,0 +1,30 @@
+
+<mat-form-field [formGroup]="resourceFormGroup" class="mat-block"
+                [appearance]="appearance"
+                [hideRequiredMarker]="hideRequiredMarker"
+                [subscriptSizing]="subscriptSizing">
+  <input matInput type="text"
+         #resourceInput
+         formControlName="resource"
+         (focusin)="onFocus()"
+         [placeholder]="placeholder"
+         [required]="required"
+         [matAutocomplete]="entityAutocomplete"
+         [matAutocompleteDisabled]="!allowAutocomplete">
+  <button *ngIf="resourceFormGroup.get('resource').value && !disabled"
+          type="button"
+          matSuffix mat-icon-button aria-label="Clear"
+          (click)="clear()">
+    <mat-icon class="material-icons">close</mat-icon>
+  </button>
+  <mat-autocomplete class="tb-autocomplete"
+                    #entityAutocomplete="matAutocomplete"
+                    [displayWith]="displayResourceFn">
+    <mat-option *ngFor="let resource of filteredResources$ | async" [value]="resource">
+      <span [innerHTML]="resource.title | highlight:searchText"></span>
+    </mat-option>
+    <mat-option *ngIf="!(filteredResources$ | async)?.length" [value]="searchText">
+      {{ searchText }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

@@ -1,0 +1,73 @@
+<div class="document-upload-container">
+
+  <div class="upload-section">
+    <div class="upload-zone"
+         (click)="!pdfPreview && fileInput.click()"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
+      
+      <div class="preview-overlay" *ngIf="pdfPreview">
+        <iframe [src]="pdfPreview"
+                class="pdf-preview"
+                frameborder="0">
+        </iframe>
+      </div>
+
+      <ng-container *ngIf="!pdfPreview">
+        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+        <p class="upload-text">Click to upload or drag and drop</p>
+        <p class="upload-text-pdf">PDF only, max 200KB</p>
+      </ng-container>
+
+      <input #fileInput
+             type="file"
+             accept="application/pdf"
+             (change)="onFileSelected($event)"
+             style="display: none;">
+    </div>
+
+    <div class="selected-file" *ngIf="fileName">
+      <button 
+        mat-button 
+        color="warn" 
+        aria-label="Delete file" 
+        (click)="removeFile()">
+        Delete
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button mat-raised-button
+            color="primary"
+            [disabled]="!uploadButtonEnabled()"
+            (click)="uploadFile()"
+            class="upload-button">
+      <mat-icon>{{ isUploading ? 'hourglass_empty' : 'cloud_upload' }}</mat-icon>
+      {{ isUploading ? 'Uploading...' : 'Save' }}
+    </button>
+
+    <button mat-raised-button
+            color="accent"
+            [disabled]="!isVerifyButtonEnabled()"
+            (click)="verifyDocument()"
+            class="verify-button">
+      <mat-icon>{{ isVerifying ? 'hourglass_empty' : 'verified' }}</mat-icon>
+      {{ isVerifying ? 'Verifying...' : 'Verify' }}
+    </button>
+  </div>
+
+  <div class="verification-status" *ngIf="verificationStatus"
+       [class.success]="verificationStatus.success"
+       [class.error]="!verificationStatus.success">
+    <mat-icon>{{verificationStatus.success ? 'check_circle' : 'error'}}</mat-icon>
+    <span>{{verificationStatus.message}}</span>
+  </div>
+
+  <mat-progress-bar *ngIf="isUploading || isLoading"
+                   mode="indeterminate"
+                   class="upload-progress">
+  </mat-progress-bar>
+</div>

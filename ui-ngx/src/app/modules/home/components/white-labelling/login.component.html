@@ -1,0 +1,165 @@
+<div>
+  <mat-card appearance="outlined" class="settings-card">
+    <mat-card-header>
+      <mat-card-title>
+        <span class="mat-headline-5" translate>white-labelling.login</span>
+      </mat-card-title>
+      <span fxFlex></span>
+      <div tb-help="securitySettings"></div>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <form class="example-form">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label translate>white-labelling.domain-name</mat-label>
+            <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+              placeholder="Ex. pat@example.com">
+
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </form>
+
+        <form class="example-form" style="width: 100%;">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label translate> white-labelling.base-url </mat-label>
+            <input matInput placeholder="" value="">
+          </mat-form-field>
+        </form>
+
+        <div>
+          <mat-checkbox style="margin-bottom: 16px;" color="primary">
+            {{ 'white-labelling.prohibit-to-use-client-name' | translate }}
+              </mat-checkbox>
+        </div>
+        <mat-hint>This setting should be enabled for production environments. May cause security issue when
+          disabled.</mat-hint>
+
+        <form class="example-form" style="width: 100%;">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label translate> white-labelling.application-title </mat-label>
+            <input matInput placeholder="" value="">
+          </mat-form-field>
+        </form>
+
+        <tb-gallery-image-input fxFlex label="{{'white-labelling.website-icon' | translate}}" formControlName="image">
+        </tb-gallery-image-input>
+
+        <tb-gallery-image-input fxFlex label="{{'white-labelling.logo' | translate}}" formControlName="image">
+        </tb-gallery-image-input>
+
+        <form class="example-form" style="width: 100%;">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label translate>white-labelling.logo height-px</mat-label>
+            <input matInput placeholder="" value="">
+          </mat-form-field>
+        </form>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" style="padding: 8px;">
+          <mat-form-field style="width: 90%;">
+            <mat-label translate>white-labelling.primary-palette</mat-label>
+            <mat-select>
+              <mat-option value="one">First option</mat-option>
+              <mat-option value="two">Second option</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-flat-button style="margin-left: 20px;">Customize</button>
+        </div>
+
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" style="padding: 8px;">
+          <mat-form-field style="width: 90%;">
+            <mat-label translate>white-labelling.accent-palette</mat-label>
+            <mat-select>
+              <mat-option value="one">First option</mat-option>
+              <mat-option value="two">Second option</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-flat-button style="margin-left: 20px;">Customize</button>
+        </div>
+
+        <div>
+          <section>
+            <div class="example-label"></div>
+            <div class="example-button-row">
+              <button mat-flat-button>Advanced CSS</button>
+            </div>
+          </section>
+        </div>
+
+        <div>
+          <mat-checkbox style="margin-bottom: 16px;" color="primary">
+            {{ 'white-labelling.dark-foreground' | translate }}
+              </mat-checkbox>
+        </div>
+
+        <form class="example-form" style="width: 100%;">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label translate> white-labelling.page-background-color </mat-label>
+            <input matInput placeholder="" value="">
+          </mat-form-field>
+        </form>
+
+
+        <div>
+          <mat-checkbox style="margin-bottom: 16px;" color="primary">
+            {{ 'white-labelling.show-platform-name-and-version' | translate }}
+              </mat-checkbox>
+        </div>
+
+
+        <form class="example-form">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label translate>white-labelling.platform-name</mat-label>
+            <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+              placeholder="OptiFleet">
+
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </form>
+
+        <form class="example-form">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label translate>white-labelling.platform-version</mat-label>
+            <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+              placeholder="3.6.4.1PAAS">
+
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </form>
+
+        <mat-form-field style="width: 100%;">
+          <mat-label translate>white-labelling.platform-name-and-version-position</mat-label>
+          <mat-select>
+            <mat-option value="one">Bottom of the login form</mat-option>
+            <mat-option value="two">Top of the login form</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <div fxLayout="row" fxLayoutAlign="end center">
+
+          <button mat-raised-button color="warn" [disabled]="isDisabledDelete" (click)="save()">
+            {{ 'action.save' | translate }}
+          </button>
+        </div>
+
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
